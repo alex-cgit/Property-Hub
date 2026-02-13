@@ -13,6 +13,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   Table,
   TableBody,
@@ -66,38 +67,22 @@ export default function PartiesPage() {
             Manage vendors, tenants, and other entities
           </p>
         </div>
-        <Button className="bg-primary text-primary-foreground rounded-none px-6 uppercase tracking-widest text-[10px] font-bold">
+        <Button className="bg-primary text-primary-foreground rounded-none px-6 uppercase tracking-widest text-[10px] font-bold shadow-md">
           <Plus className="mr-2 h-3 w-3" /> Add Party
         </Button>
       </div>
 
-      <div className="flex items-center justify-between gap-4 border-b border-border/50 pb-4">
-        <div className="flex items-center gap-2">
-          <Button 
-            variant={typeFilter === "all" ? "default" : "outline"} 
-            onClick={() => setTypeFilter("all")}
-            className="rounded-none h-7 text-[10px] uppercase tracking-widest"
-          >
-            All
-          </Button>
-          <Button 
-            variant={typeFilter === "Vendor" ? "default" : "outline"} 
-            onClick={() => setTypeFilter("Vendor")}
-            className="rounded-none h-7 text-[10px] uppercase tracking-widest"
-          >
-            Vendors
-          </Button>
-          <Button 
-            variant={typeFilter === "Tenant" ? "default" : "outline"} 
-            onClick={() => setTypeFilter("Tenant")}
-            className="rounded-none h-7 text-[10px] uppercase tracking-widest"
-          >
-            Tenants
-          </Button>
-        </div>
+      <div className="flex flex-col md:flex-row gap-4 items-center justify-between border-b border-border/50 pb-4">
+        <Tabs defaultValue="all" className="w-full md:w-auto" onValueChange={setTypeFilter}>
+          <TabsList className="bg-transparent gap-6 h-auto p-0 w-full justify-start rounded-none">
+            <TabsTrigger value="all" className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:shadow-none px-0 pb-3 text-[10px] uppercase tracking-widest font-bold">All</TabsTrigger>
+            <TabsTrigger value="Vendor" className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:shadow-none px-0 pb-3 text-[10px] uppercase tracking-widest font-bold">Vendors</TabsTrigger>
+            <TabsTrigger value="Tenant" className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:shadow-none px-0 pb-3 text-[10px] uppercase tracking-widest font-bold">Tenants</TabsTrigger>
+          </TabsList>
+        </Tabs>
 
-        <div className="flex items-center gap-2">
-          <div className="relative w-64">
+        <div className="flex flex-col sm:flex-row gap-3 w-full md:w-auto items-center">
+          <div className="relative w-full sm:w-[200px]">
             <Search className="absolute left-2 top-2.5 h-3 w-3 text-muted-foreground" />
             <Input 
               placeholder="SEARCH PARTIES..." 
