@@ -161,6 +161,15 @@ export const chartOfAccounts: Account[] = [
   { id: "acc-5100", code: "5100", name: "Utilities", type: "Expense", category: "Operations", balance: 8000 },
 ];
 
+export const financialStats = [
+  { name: "Jan", income: 45000, expenses: 12000 },
+  { name: "Feb", income: 42000, expenses: 15000 },
+  { name: "Mar", income: 48000, expenses: 11000 },
+  { name: "Apr", income: 46000, expenses: 18000 },
+  { name: "May", income: 51000, expenses: 10000 },
+  { name: "Jun", income: 49000, expenses: 13000 },
+];
+
 export const journalEntries: JournalEntry[] = [
   {
     id: "je-1",
