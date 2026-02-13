@@ -1,0 +1,846 @@
+# Frontend Components - Lightweight General Ledger
+
+## Page Components
+
+### 1. Dashboard Page (`/dashboard`)
+
+**Layout:**
+```
+┌─────────────────────────────────────────┐
+│ Summary Cards (4-column grid)           │
+├─────────────────────────────────────────┤
+│ Recent Entries (Table)                  │
+├─────────────────────────────────────────┤
+│ Quick Actions (Button Grid)             │
+└─────────────────────────────────────────┘
+```
+
+**Sub-Components:**
+- `SummaryCard` - displays metric with title, value, trend
+- `RecentEntriesTable` - shows last 10 entries with status badges
+- `QuickActionButtons` - grid of primary action buttons
+
+**Props:**
+```typescript
+SummaryCard: {
+  title: string
+  value: number | string
+  trend?: 'up' | 'down' | 'neutral'
+  icon?: ReactNode
+}
+
+RecentEntriesTable: {
+  entries: JournalEntry[]
+  onEntryClick: (id: string) => void
+}
+
+QuickActionButtons: {
+  onNewEntry: () => void
+  onNewParty: () => void
+  onNewAccount: () => void
+}
+```
+
+---
+
+### 2. Chart of Accounts Page (`/accounts`)
+
+**Layout:**
+```
+┌─────────────────────────────────────────┐
+│ Header (Title + Add Account Button)     │
+├─────────────────────────────────────────┤
+│ Filters (Type, Active/Inactive, Search) │
+├─────────────────────────────────────────┤
+│ Accounts Tree View                      │
+└─────────────────────────────────────────┘
+```
+
+**Components:**
+- `AccountsPageHeader`
+- `AccountFilters`
+- `AccountTreeView`
+- `AccountTreeNode` (recursive)
+- `AddAccountModal`
+- `EditAccountModal`
+
+**Props:**
+```typescript
+AccountTreeView: {
+  accounts: Account[]
+  onEdit: (id: string) => void
+  onDeactivate: (id: string) => void
+  onAddSubAccount: (parentId: string) => void
+}
+
+AccountTreeNode: {
+  account: Account
+  children?: Account[]
+  level: number
+  onEdit: (id: string) => void
+  onDeactivate: (id: string) => void
+  onAddSubAccount: (id: string) => void
+}
+
+AddAccountModal: {
+  isOpen: boolean
+  onClose: () => void
+  onSave: (account: Partial<Account>) => void
+  parentAccount?: Account
+}
+
+AccountFilters: {
+  selectedType: AccountType | 'all'
+  onTypeChange: (type: AccountType | 'all') => void
+  showInactive: boolean
+  onToggleInactive: (show: boolean) => void
+  searchTerm: string
+  onSearchChange: (term: string) => void
+}
+```
+
+---
+
+### 3. Parties Page (`/parties`)
+
+**Layout:**
+```
+┌─────────────────────────────────────────┐
+│ Header (Title + Add Party Button)       │
+├─────────────────────────────────────────┤
+│ Filters (Type, Active/Inactive, Search) │
+├─────────────────────────────────────────┤
+│ Parties Table (Sortable)                │
+└─────────────────────────────────────────┘
+```
+
+**Components:**
+- `PartiesPageHeader`
+- `PartyFilters`
+- `PartiesTable`
+- `PartyRow`
+- `AddPartyModal`
+- `EditPartyModal`
+- `PartyStatementModal`
+
+**Props:**
+```typescript
+PartiesTable: {
+  parties: Party[]
+  onEdit: (id: string) => void
+  onViewStatement: (id: string) => void
+  onDeactivate: (id: string) => void
+  sortBy: 'name' | 'type' | 'balance'
+  sortOrder: 'asc' | 'desc'
+  onSort: (field: string) => void
+}
+
+PartyRow: {
+  party: Party
+  onEdit: () => void
+  onViewStatement: () => void
+  onDeactivate: () => void
+}
+
+AddPartyModal: {
+  isOpen: boolean
+  onClose: () => void
+  onSave: (party: Partial<Party>) => void
+}
+
+PartyFilters: {
+  selectedType: PartyType | 'all'
+  onTypeChange: (type: PartyType | 'all') => void
+  showInactive: boolean
+  onToggleInactive: (show: boolean) => void
+  searchTerm: string
+  onSearchChange: (term: string) => void
+}
+```
+
+---
+
+### 4. Journal Entries List Page (`/journal-entries`)
+
+**Layout:**
+```
+┌─────────────────────────────────────────┐
+│ Header (Title + New Entry Button)       │
+├─────────────────────────────────────────┤
+│ Filters (Status, Date Range, User)      │
+├─────────────────────────────────────────┤
+│ Entries Table                           │
+└─────────────────────────────────────────┘
+```
+
+**Components:**
+- `JournalEntriesPageHeader`
+- `JournalEntryFilters`
+- `JournalEntriesTable`
+- `JournalEntryRow`
+
+**Props:**
+```typescript
+JournalEntriesTable: {
+  entries: JournalEntry[]
+  onView: (id: string) => void
+  onEdit: (id: string) => void
+  onDelete: (id: string) => void
+  onPost: (id: string) => void
+  onVoid: (id: string) => void
+  onCopy: (id: string) => void
+}
+
+JournalEntryRow: {
+  entry: JournalEntry
+  onView: () => void
+  onEdit: () => void
+  onDelete: () => void
+  onPost: () => void
+  onVoid: () => void
+  onCopy: () => void
+}
+
+JournalEntryFilters: {
+  status: EntryStatus | 'all'
+  onStatusChange: (status: EntryStatus | 'all') => void
+  dateFrom: Date | null
+  dateTo: Date | null
+  onDateRangeChange: (from: Date | null, to: Date | null) => void
+}
+```
+
+---
+
+### 5. Journal Entry Form Page (`/journal-entries/new` & `/journal-entries/:id/edit`)
+
+**Layout:**
+```
+┌─────────────────────────────────────────┐
+│ Header (Back, Entry #, Status Badge)    │
+├─────────────────────────────────────────┤
+│ Entry Details (Date, Ref, Description)  │
+├─────────────────────────────────────────┤
+│ Lines Grid (Account, Desc, Party, DR/CR)│
+│   - Line 1                              │
+│   - Line 2                              │
+│   - Add Line Button                     │
+├─────────────────────────────────────────┤
+│ Balance Summary (Debits | Credits | Δ)  │
+├─────────────────────────────────────────┤
+│ Attachments                             │
+├─────────────────────────────────────────┤
+│ Actions (Save Draft, Post, Cancel)      │
+└─────────────────────────────────────────┘
+```
+
+**Components:**
+- `JournalEntryFormHeader`
+- `EntryDetailsForm`
+- `JournalEntryLinesGrid`
+- `JournalEntryLine`
+- `AddLineButton`
+- `BalanceSummary`
+- `AttachmentsSection`
+- `EntryFormActions`
+
+**Props:**
+```typescript
+JournalEntryFormHeader: {
+  entryNumber: string
+  status: EntryStatus
+  onBack: () => void
+}
+
+EntryDetailsForm: {
+  entryDate: Date
+  referenceNumber: string
+  description: string
+  onEntryDateChange: (date: Date) => void
+  onReferenceChange: (ref: string) => void
+  onDescriptionChange: (desc: string) => void
+  disabled: boolean
+}
+
+JournalEntryLinesGrid: {
+  lines: JournalEntryLine[]
+  accounts: Account[]
+  parties: Party[]
+  onLineChange: (lineId: string, field: string, value: any) => void
+  onRemoveLine: (lineId: string) => void
+  disabled: boolean
+}
+
+JournalEntryLine: {
+  line: JournalEntryLine
+  lineNumber: number
+  accounts: Account[]
+  parties: Party[]
+  onChange: (field: string, value: any) => void
+  onRemove: () => void
+  disabled: boolean
+}
+
+BalanceSummary: {
+  totalDebits: number
+  totalCredits: number
+  difference: number
+  isBalanced: boolean
+}
+
+AttachmentsSection: {
+  attachments: File[]
+  onUpload: (files: File[]) => void
+  onRemove: (index: number) => void
+  disabled: boolean
+}
+
+EntryFormActions: {
+  status: EntryStatus
+  isBalanced: boolean
+  isSaving: boolean
+  onSaveDraft: () => void
+  onPost: () => void
+  onCancel: () => void
+}
+```
+
+---
+
+### 6. Reports Page (`/reports`)
+
+**Layout:**
+```
+┌─────────────────────────────────────────┐
+│ Report Type Tabs                        │
+├─────────────────────────────────────────┤
+│ Report Filters (varies by type)         │
+├─────────────────────────────────────────┤
+│ Report Display Area                     │
+├─────────────────────────────────────────┤
+│ Export Buttons (PDF, Excel, CSV)        │
+└─────────────────────────────────────────┘
+```
+
+**Components:**
+- `ReportTypeTabs`
+- `GeneralLedgerReport`
+- `TrialBalanceReport`
+- `AccountActivityReport`
+- `PartyStatementReport`
+- `AuditTrailReport`
+- `ReportFilters`
+- `ExportButtons`
+
+**Props:**
+```typescript
+ReportTypeTabs: {
+  activeReport: ReportType
+  onTabChange: (type: ReportType) => void
+}
+
+GeneralLedgerReport: {
+  data: GLReportData[]
+  filters: GLFilters
+  onFilterChange: (filters: GLFilters) => void
+}
+
+TrialBalanceReport: {
+  data: TrialBalanceData[]
+  asOfDate: Date
+  onDateChange: (date: Date) => void
+}
+
+AccountActivityReport: {
+  accountId: string
+  data: AccountActivityData[]
+  filters: ActivityFilters
+  onFilterChange: (filters: ActivityFilters) => void
+}
+
+PartyStatementReport: {
+  partyId: string
+  data: StatementData[]
+  filters: StatementFilters
+  onFilterChange: (filters: StatementFilters) => void
+}
+
+AuditTrailReport: {
+  data: AuditLogEntry[]
+  filters: AuditFilters
+  onFilterChange: (filters: AuditFilters) => void
+}
+
+ExportButtons: {
+  onExportPDF: () => void
+  onExportExcel: () => void
+  onExportCSV: () => void
+  isExporting: boolean
+}
+```
+
+---
+
+## Shared/Reusable Components
+
+### Form Controls
+
+**`AccountPicker`**
+```typescript
+Props: {
+  value: string | null
+  onChange: (accountId: string) => void
+  accounts: Account[]
+  placeholder?: string
+  disabled?: boolean
+  filterByType?: AccountType[]
+  showBalance?: boolean
+}
+```
+
+**`PartyPicker`**
+```typescript
+Props: {
+  value: string | null
+  onChange: (partyId: string) => void
+  parties: Party[]
+  placeholder?: string
+  disabled?: boolean
+  filterByType?: PartyType[]
+}
+```
+
+**`DatePicker`**
+```typescript
+Props: {
+  value: Date | null
+  onChange: (date: Date | null) => void
+  label?: string
+  disabled?: boolean
+  maxDate?: Date
+  minDate?: Date
+}
+```
+
+**`DateRangePicker`**
+```typescript
+Props: {
+  dateFrom: Date | null
+  dateTo: Date | null
+  onChange: (from: Date | null, to: Date | null) => void
+  label?: string
+  disabled?: boolean
+}
+```
+
+**`CurrencyInput`**
+```typescript
+Props: {
+  value: number
+  onChange: (value: number) => void
+  label?: string
+  placeholder?: string
+  disabled?: boolean
+  error?: string
+}
+```
+
+**`SearchInput`**
+```typescript
+Props: {
+  value: string
+  onChange: (value: string) => void
+  placeholder?: string
+  onClear?: () => void
+}
+```
+
+---
+
+### Display Components
+
+**`StatusBadge`**
+```typescript
+Props: {
+  status: 'Draft' | 'Posted' | 'Void'
+  size?: 'sm' | 'md' | 'lg'
+}
+
+Styles:
+- Draft: yellow/amber
+- Posted: green
+- Void: red/gray
+```
+
+**`AccountTypeBadge`**
+```typescript
+Props: {
+  type: AccountType
+  size?: 'sm' | 'md' | 'lg'
+}
+
+Styles:
+- Asset: blue
+- Liability: orange
+- Equity: purple
+- Revenue: green
+- Expense: red
+```
+
+**`PartyTypeBadge`**
+```typescript
+Props: {
+  type: PartyType
+  size?: 'sm' | 'md' | 'lg'
+}
+
+Styles:
+- Vendor: orange
+- Customer: blue
+- Tenant: green
+- Employee: purple
+- Other: gray
+```
+
+**`CurrencyDisplay`**
+```typescript
+Props: {
+  amount: number
+  showCurrency?: boolean
+  showSign?: boolean
+  className?: string
+  color?: 'default' | 'positive' | 'negative'
+}
+```
+
+**`BalanceDisplay`**
+```typescript
+Props: {
+  debit?: number
+  credit?: number
+  balance?: number
+  showZero?: boolean
+}
+```
+
+**`EmptyState`**
+```typescript
+Props: {
+  icon?: ReactNode
+  title: string
+  description?: string
+  action?: {
+    label: string
+    onClick: () => void
+  }
+}
+```
+
+**`LoadingSpinner`**
+```typescript
+Props: {
+  size?: 'sm' | 'md' | 'lg'
+  fullScreen?: boolean
+}
+```
+
+**`ErrorMessage`**
+```typescript
+Props: {
+  message: string
+  onRetry?: () => void
+  onDismiss?: () => void
+}
+```
+
+---
+
+### Modal Components
+
+**`ConfirmDialog`**
+```typescript
+Props: {
+  isOpen: boolean
+  title: string
+  message: string
+  confirmLabel?: string
+  cancelLabel?: string
+  variant?: 'danger' | 'warning' | 'info'
+  onConfirm: () => void
+  onCancel: () => void
+}
+```
+
+**`VoidEntryModal`**
+```typescript
+Props: {
+  isOpen: boolean
+  entry: JournalEntry
+  onVoid: (reason: string) => void
+  onCancel: () => void
+}
+```
+
+**`DeleteConfirmModal`**
+```typescript
+Props: {
+  isOpen: boolean
+  itemType: 'entry' | 'account' | 'party'
+  itemName: string
+  onConfirm: () => void
+  onCancel: () => void
+}
+```
+
+---
+
+### Table Components
+
+**`DataTable`**
+```typescript
+Props: {
+  columns: Column[]
+  data: any[]
+  onRowClick?: (row: any) => void
+  sortable?: boolean
+  sortBy?: string
+  sortOrder?: 'asc' | 'desc'
+  onSort?: (field: string) => void
+  emptyMessage?: string
+  loading?: boolean
+}
+
+Column: {
+  key: string
+  label: string
+  sortable?: boolean
+  width?: string
+  align?: 'left' | 'center' | 'right'
+  render?: (value: any, row: any) => ReactNode
+}
+```
+
+**`PaginatedTable`**
+```typescript
+Props: {
+  ...DataTableProps
+  page: number
+  pageSize: number
+  totalItems: number
+  onPageChange: (page: number) => void
+  onPageSizeChange: (size: number) => void
+}
+```
+
+---
+
+### Layout Components
+
+**`PageHeader`**
+```typescript
+Props: {
+  title: string
+  breadcrumbs?: Breadcrumb[]
+  actions?: ReactNode
+}
+
+Breadcrumb: {
+  label: string
+  href?: string
+}
+```
+
+**`Card`**
+```typescript
+Props: {
+  title?: string
+  subtitle?: string
+  headerActions?: ReactNode
+  children: ReactNode
+  className?: string
+}
+```
+
+**`Tabs`**
+```typescript
+Props: {
+  tabs: Tab[]
+  activeTab: string
+  onChange: (tabId: string) => void
+}
+
+Tab: {
+  id: string
+  label: string
+  icon?: ReactNode
+  count?: number
+}
+```
+
+**`FilterBar`**
+```typescript
+Props: {
+  children: ReactNode
+  onClear?: () => void
+  showClearButton?: boolean
+}
+```
+
+---
+
+## Component File Structure
+
+```
+/components
+  /layout
+    - PageHeader.tsx
+    - Card.tsx
+    - Tabs.tsx
+    - FilterBar.tsx
+    - Sidebar.tsx
+    - TopNav.tsx
+  
+  /forms
+    - AccountPicker.tsx
+    - PartyPicker.tsx
+    - DatePicker.tsx
+    - DateRangePicker.tsx
+    - CurrencyInput.tsx
+    - SearchInput.tsx
+  
+  /display
+    - StatusBadge.tsx
+    - AccountTypeBadge.tsx
+    - PartyTypeBadge.tsx
+    - CurrencyDisplay.tsx
+    - BalanceDisplay.tsx
+    - EmptyState.tsx
+    - LoadingSpinner.tsx
+    - ErrorMessage.tsx
+  
+  /modals
+    - ConfirmDialog.tsx
+    - VoidEntryModal.tsx
+    - DeleteConfirmModal.tsx
+    - AddAccountModal.tsx
+    - EditAccountModal.tsx
+    - AddPartyModal.tsx
+    - EditPartyModal.tsx
+  
+  /tables
+    - DataTable.tsx
+    - PaginatedTable.tsx
+  
+  /accounts
+    - AccountTreeView.tsx
+    - AccountTreeNode.tsx
+    - AccountFilters.tsx
+  
+  /parties
+    - PartiesTable.tsx
+    - PartyRow.tsx
+    - PartyFilters.tsx
+  
+  /journal-entries
+    - JournalEntriesTable.tsx
+    - JournalEntryRow.tsx
+    - JournalEntryFilters.tsx
+    - JournalEntryFormHeader.tsx
+    - EntryDetailsForm.tsx
+    - JournalEntryLinesGrid.tsx
+    - JournalEntryLine.tsx
+    - BalanceSummary.tsx
+    - AttachmentsSection.tsx
+  
+  /reports
+    - ReportTypeTabs.tsx
+    - GeneralLedgerReport.tsx
+    - TrialBalanceReport.tsx
+    - AccountActivityReport.tsx
+    - PartyStatementReport.tsx
+    - AuditTrailReport.tsx
+    - ExportButtons.tsx
+  
+  /dashboard
+    - SummaryCard.tsx
+    - RecentEntriesTable.tsx
+    - QuickActionButtons.tsx
+```
+
+---
+
+## Responsive Behavior
+
+**Mobile (<768px):**
+- Stack summary cards vertically
+- Tables scroll horizontally
+- Modals full-screen
+- Simplified navigation (hamburger menu)
+- Journal entry lines: one per card instead of grid
+
+**Tablet (768px-1024px):**
+- 2-column grid for summary cards
+- Tables with horizontal scroll if needed
+- Side-by-side modals for larger forms
+
+**Desktop (>1024px):**
+- Full multi-column layouts
+- Sidebar navigation always visible
+- Modals centered with max-width
+- Multi-column journal entry grid
+
+---
+
+## State Management Recommendations
+
+**Local State (useState):**
+- Form inputs
+- Modal open/close
+- Filter selections
+- Sort order
+
+**Global State (Context/Zustand/Redux):**
+- User authentication
+- Current user info
+- Accounts list
+- Parties list
+- Active journal entry being edited
+
+**Server State (React Query/SWR):**
+- All data fetching
+- Mutations (create/update/delete)
+- Report generation
+- Cache invalidation
+
+---
+
+## Key User Flows
+
+**1. Create Journal Entry:**
+```
+Dashboard → Click "New Entry" → 
+Entry Form → Fill header → 
+Add lines (min 2) → 
+Select accounts/parties → 
+Enter debits/credits → 
+Verify balance → 
+Save Draft OR Post
+```
+
+**2. View Account Activity:**
+```
+Chart of Accounts → 
+Click account row → 
+View account detail → 
+See all transactions → 
+Export if needed
+```
+
+**3. Generate Report:**
+```
+Reports Page → 
+Select report type (tab) → 
+Set filters → 
+View results → 
+Export (PDF/Excel/CSV)
+```
