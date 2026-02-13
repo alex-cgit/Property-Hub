@@ -53,13 +53,13 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   ];
 
   return (
-    <SidebarProvider>
+    <SidebarProvider defaultOpen={false}>
       <div className="flex min-h-screen w-full bg-background text-foreground font-sans">
         <AppSidebar location={location} navItems={navItems} />
         
         <main className="flex-1 flex flex-col min-w-0 transition-all duration-300 ease-in-out">
           <header className="sticky top-0 z-10 flex h-16 shrink-0 items-center gap-4 border-b bg-background/80 px-6 backdrop-blur-md">
-            <SidebarTrigger />
+            <SidebarTrigger className="-ml-1" />
             <Separator orientation="vertical" className="h-6" />
             
             <div className="flex-1">
@@ -93,31 +93,34 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 
 function AppSidebar({ location, navItems }: { location: string, navItems: any[] }) {
   return (
-    <Sidebar collapsible="icon" className="border-r border-border bg-sidebar text-sidebar-foreground">
-      <SidebarHeader className="h-20 flex items-center justify-center border-b border-sidebar-border/30">
+    <Sidebar 
+      collapsible="icon" 
+      className="border-r border-border bg-sidebar text-sidebar-foreground transition-all duration-300 ease-in-out group-data-[collapsible=icon]:w-[60px]"
+    >
+      <SidebarHeader className="h-20 flex items-center justify-center border-b border-sidebar-border/30 overflow-hidden">
         <div className="flex items-center gap-3 px-2 font-heading font-semibold text-lg tracking-tight">
-          <div className="flex h-10 w-10 items-center justify-center rounded-none bg-primary text-primary-foreground">
+          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-none bg-primary text-primary-foreground">
             <Building2 className="size-6 stroke-[1.5]" />
           </div>
-          <span className="group-data-[collapsible=icon]:hidden uppercase tracking-widest">PROP</span>
+          <span className="group-data-[collapsible=icon]:hidden uppercase tracking-widest whitespace-nowrap">PROP</span>
         </div>
       </SidebarHeader>
       
-      <SidebarContent className="gap-0">
-        <SidebarGroup className="pt-6">
+      <SidebarContent className="gap-0 py-4">
+        <SidebarGroup>
           <SidebarGroupContent>
-            <SidebarMenu className="gap-1 px-2">
+            <SidebarMenu className="gap-2 px-2">
               {navItems.map((item) => (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton 
                     asChild 
                     isActive={location === item.url || (item.url !== "/" && location.startsWith(item.url))}
                     tooltip={item.title}
-                    className="gap-4 px-4 py-6 h-auto rounded-none text-sidebar-foreground/60 hover:bg-sidebar-accent hover:text-sidebar-accent-foreground data-[active=true]:bg-transparent data-[active=true]:text-sidebar-primary data-[active=true]:font-bold border-l-2 border-transparent data-[active=true]:border-primary transition-all duration-200"
+                    className="gap-4 px-3 py-6 h-auto rounded-none text-sidebar-foreground/60 hover:bg-sidebar-accent hover:text-sidebar-accent-foreground data-[active=true]:bg-transparent data-[active=true]:text-sidebar-primary data-[active=true]:font-bold border-l-2 border-transparent data-[active=true]:border-primary transition-all duration-200 overflow-hidden"
                   >
                     <Link href={item.url}>
-                      <item.icon className="h-5 w-5 stroke-[1.5]" />
-                      <span className="text-sm uppercase tracking-wider">{item.title}</span>
+                      <item.icon className="h-5 w-5 shrink-0 stroke-[1.5]" />
+                      <span className="text-sm uppercase tracking-wider group-data-[collapsible=icon]:hidden whitespace-nowrap">{item.title}</span>
                     </Link>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
