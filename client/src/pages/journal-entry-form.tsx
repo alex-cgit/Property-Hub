@@ -21,17 +21,17 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { chartOfAccounts } from "@/lib/mock-data";
+import { chartOfAccounts, parties } from "@/lib/mock-data";
 
 export default function JournalEntryFormPage() {
   const [location, setLocation] = useLocation();
   const [lines, setLines] = useState([
-    { id: 1, accountId: "", description: "", debit: 0, credit: 0 },
-    { id: 2, accountId: "", description: "", debit: 0, credit: 0 },
+    { id: 1, accountId: "", partyId: "", description: "", debit: 0, credit: 0 },
+    { id: 2, accountId: "", partyId: "", description: "", debit: 0, credit: 0 },
   ]);
 
   const addLine = () => {
-    setLines([...lines, { id: Date.now(), accountId: "", description: "", debit: 0, credit: 0 }]);
+    setLines([...lines, { id: Date.now(), accountId: "", partyId: "", description: "", debit: 0, credit: 0 }]);
   };
 
   const removeLine = (id: number) => {
@@ -122,18 +122,26 @@ export default function JournalEntryFormPage() {
                 <table className="w-full">
                   <thead className="bg-muted/10 border-b border-border/50">
                     <tr>
-                      <th className="text-[8px] uppercase tracking-widest font-bold text-left p-3 w-[30%]">Account</th>
-                      <th className="text-[8px] uppercase tracking-widest font-bold text-left p-3 w-[30%]">Description</th>
-                      <th className="text-[8px] uppercase tracking-widest font-bold text-right p-3 w-[15%]">Debit</th>
-                      <th className="text-[8px] uppercase tracking-widest font-bold text-right p-3 w-[15%]">Credit</th>
-                      <th className="w-[10%]"></th>
+                      <th className="text-[8px] uppercase tracking-widest font-bold text-left p-3 w-[25%]">Account</th>
+                      <th className="text-[8px] uppercase tracking-widest font-bold text-left p-3 w-[20%]">Party</th>
+                      <th className="text-[8px] uppercase tracking-widest font-bold text-left p-3 w-[25%]">Description</th>
+                      <th className="text-[8px] uppercase tracking-widest font-bold text-right p-3 w-[12.5%]">Debit</th>
+                      <th className="text-[8px] uppercase tracking-widest font-bold text-right p-3 w-[12.5%]">Credit</th>
+                      <th className="w-[5%]"></th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-border/30">
                     {lines.map((line, index) => (
                       <tr key={line.id} className="group hover:bg-muted/10 transition-colors">
                         <td className="p-2">
-                          <Select>
+                          <Select 
+                            value={line.accountId} 
+                            onValueChange={(val) => {
+                              const newLines = [...lines];
+                              newLines[index].accountId = val;
+                              setLines(newLines);
+                            }}
+                          >
                             <SelectTrigger className="w-full rounded-none border-border/50 h-9 text-[10px] uppercase tracking-wider">
                               <SelectValue placeholder="SELECT ACCOUNT" />
                             </SelectTrigger>
@@ -147,7 +155,38 @@ export default function JournalEntryFormPage() {
                           </Select>
                         </td>
                         <td className="p-2">
-                          <Input className="rounded-none border-border/50 h-9 text-[10px]" placeholder="Line description..." />
+                           <Select 
+                            value={line.partyId} 
+                            onValueChange={(val) => {
+                              const newLines = [...lines];
+                              newLines[index].partyId = val;
+                              setLines(newLines);
+                            }}
+                          >
+                            <SelectTrigger className="w-full rounded-none border-border/50 h-9 text-[10px] uppercase tracking-wider">
+                              <SelectValue placeholder="SELECT PARTY" />
+                            </SelectTrigger>
+                            <SelectContent className="rounded-none">
+                              <SelectItem value="none" className="text-[10px] uppercase tracking-wider text-muted-foreground">None</SelectItem>
+                              {parties.map(party => (
+                                <SelectItem key={party.id} value={party.id} className="text-[10px] uppercase tracking-wider">
+                                  {party.name}
+                                </SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+                        </td>
+                        <td className="p-2">
+                          <Input 
+                            className="rounded-none border-border/50 h-9 text-[10px]" 
+                            placeholder="Line description..." 
+                            value={line.description}
+                            onChange={(e) => {
+                              const newLines = [...lines];
+                              newLines[index].description = e.target.value;
+                              setLines(newLines);
+                            }}
+                          />
                         </td>
                         <td className="p-2">
                           <Input 

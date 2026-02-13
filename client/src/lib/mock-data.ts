@@ -195,3 +195,20 @@ export const journalEntries: JournalEntry[] = [
     ]
   }
 ];
+
+export interface Party {
+  id: string;
+  name: string;
+  type: "Vendor" | "Customer" | "Tenant" | "Employee" | "Other";
+  email: string;
+  phone: string;
+  status: "Active" | "Inactive";
+  balance: number;
+}
+
+export const parties: Party[] = [
+  { id: "p-1", name: "TechCool Services", type: "Vendor", email: "support@techcool.com", phone: "(555) 123-4567", status: "Active", balance: -800 },
+  { id: "p-2", name: "City Utilities", type: "Vendor", email: "billing@city.gov", phone: "(555) 987-6543", status: "Active", balance: -150 },
+  { id: "p-3", name: "Sarah Jenkins", type: "Tenant", email: "sarah.j@example.com", phone: "(555) 555-0123", status: "Active", balance: 0 },
+  { id: "p-4", name: "Ace Plumbing", type: "Vendor", email: "contact@aceplumbing.com", phone: "(555) 555-0199", status: "Inactive", balance: 0 },
+];

@@ -27,29 +27,13 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-
-interface Party {
-  id: string;
-  name: string;
-  type: "Vendor" | "Customer" | "Tenant" | "Employee" | "Other";
-  email: string;
-  phone: string;
-  status: "Active" | "Inactive";
-  balance: number;
-}
-
-const mockParties: Party[] = [
-  { id: "p-1", name: "TechCool Services", type: "Vendor", email: "support@techcool.com", phone: "(555) 123-4567", status: "Active", balance: -800 },
-  { id: "p-2", name: "City Utilities", type: "Vendor", email: "billing@city.gov", phone: "(555) 987-6543", status: "Active", balance: -150 },
-  { id: "p-3", name: "Sarah Jenkins", type: "Tenant", email: "sarah.j@example.com", phone: "(555) 555-0123", status: "Active", balance: 0 },
-  { id: "p-4", name: "Ace Plumbing", type: "Vendor", email: "contact@aceplumbing.com", phone: "(555) 555-0199", status: "Inactive", balance: 0 },
-];
+import { parties } from "@/lib/mock-data";
 
 export default function PartiesPage() {
   const [searchTerm, setSearchTerm] = useState("");
   const [typeFilter, setTypeFilter] = useState<string>("all");
 
-  const filteredParties = mockParties.filter(party => {
+  const filteredParties = parties.filter(party => {
     const matchesSearch = party.name.toLowerCase().includes(searchTerm.toLowerCase()) || 
                           party.email.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesType = typeFilter === "all" || party.type === typeFilter;
