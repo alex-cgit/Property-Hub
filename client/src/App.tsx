@@ -10,6 +10,7 @@ import PropertiesPage from "@/pages/properties";
 import TenantsPage from "@/pages/tenants";
 import MaintenancePage from "@/pages/maintenance";
 import FinancialsPage from "@/pages/financials";
+import GeneralLedgerPage from "@/pages/ledger";
 
 function Router() {
   return (
@@ -20,6 +21,7 @@ function Router() {
         <Route path="/tenants" component={TenantsPage} />
         <Route path="/maintenance" component={MaintenancePage} />
         <Route path="/financials" component={FinancialsPage} />
+        <Route path="/ledger" component={GeneralLedgerPage} />
         <Route component={NotFound} />
       </Switch>
     </Layout>

@@ -11,7 +11,8 @@ import {
   Search,
   Menu,
   LogOut,
-  ChevronDown
+  ChevronDown,
+  FileText
 } from "lucide-react";
 import { 
   Sidebar, 
@@ -50,6 +51,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
     { title: "Tenants & Leases", icon: Users, url: "/tenants" },
     { title: "Maintenance", icon: Wrench, url: "/maintenance" },
     { title: "Financials", icon: DollarSign, url: "/financials" },
+    { title: "General Ledger", icon: FileText, url: "/ledger" },
   ];
 
   return (

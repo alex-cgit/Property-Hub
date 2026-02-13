@@ -128,11 +128,61 @@ export const maintenanceRequests: MaintenanceRequest[] = [
   { id: "m-3", propertyId: "prop-1", title: "Lobby Light Out", description: "Main entrance overhead light is flickering.", priority: "Medium", status: "Completed", dateReported: "2023-10-10" },
 ];
 
-export const financialStats = [
-  { name: "Jan", income: 45000, expenses: 12000 },
-  { name: "Feb", income: 42000, expenses: 15000 },
-  { name: "Mar", income: 48000, expenses: 11000 },
-  { name: "Apr", income: 46000, expenses: 18000 },
-  { name: "May", income: 51000, expenses: 10000 },
-  { name: "Jun", income: 49000, expenses: 13000 },
+export interface Account {
+  id: string;
+  code: string;
+  name: string;
+  type: "Asset" | "Liability" | "Equity" | "Revenue" | "Expense";
+  category: string;
+  balance: number;
+}
+
+export interface JournalEntry {
+  id: string;
+  date: string;
+  description: string;
+  reference?: string; // Invoice ID, Lease ID, etc.
+  status: "Draft" | "Posted";
+  lines: {
+    accountId: string;
+    description: string;
+    debit: number;
+    credit: number;
+  }[];
+}
+
+export const chartOfAccounts: Account[] = [
+  { id: "acc-1001", code: "1001", name: "Operating Cash", type: "Asset", category: "Cash", balance: 125000 },
+  { id: "acc-1100", code: "1100", name: "Accounts Receivable", type: "Asset", category: "Receivables", balance: 45000 },
+  { id: "acc-2000", code: "2000", name: "Accounts Payable", type: "Liability", category: "Payables", balance: 12000 },
+  { id: "acc-2100", code: "2100", name: "Security Deposits", type: "Liability", category: "Deposits", balance: 35000 },
+  { id: "acc-4000", code: "4000", name: "Rental Income", type: "Revenue", category: "Income", balance: 240000 },
+  { id: "acc-5000", code: "5000", name: "Repairs & Maintenance", type: "Expense", category: "Operations", balance: 15000 },
+  { id: "acc-5100", code: "5100", name: "Utilities", type: "Expense", category: "Operations", balance: 8000 },
+];
+
+export const journalEntries: JournalEntry[] = [
+  {
+    id: "je-1",
+    date: "2023-10-01",
+    description: "Monthly Rent Recognition - Unit 101",
+    reference: "l-1",
+    status: "Posted",
+    lines: [
+      { accountId: "acc-1100", description: "Rent receivable", debit: 2200, credit: 0 },
+      { accountId: "acc-4000", description: "Rent income", debit: 0, credit: 2200 },
+    ]
+  },
+  {
+    id: "je-2",
+    date: "2023-10-05",
+    description: "HVAC Repair - Split Entry",
+    reference: "m-2",
+    status: "Posted",
+    lines: [
+      { accountId: "acc-5000", description: "Labor portion", debit: 500, credit: 0 },
+      { accountId: "acc-5100", description: "Parts portion", debit: 300, credit: 0 },
+      { accountId: "acc-2000", description: "Payable to TechCool", debit: 0, credit: 800 },
+    ]
+  }
 ];
