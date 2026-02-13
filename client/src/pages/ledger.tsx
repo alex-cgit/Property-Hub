@@ -50,8 +50,8 @@ export default function GeneralLedgerPage() {
         </div>
         <div className="flex gap-2">
           <NewJournalEntryDialog />
-          <Button className="bg-primary text-primary-foreground rounded-none px-6">
-            <Receipt className="mr-2 h-4 w-4" /> Record Invoice
+          <Button className="bg-primary text-primary-foreground rounded-none px-6 uppercase tracking-widest text-[10px] font-bold">
+            <Receipt className="mr-2 h-3 w-3" /> Record Invoice
           </Button>
         </div>
       </div>

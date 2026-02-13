@@ -16,7 +16,9 @@ import {
   DollarSign, 
   ArrowUpRight, 
   ArrowDownRight,
-  TrendingUp
+  TrendingUp,
+  Plus,
+  Download
 } from "lucide-react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -29,17 +31,21 @@ export default function Dashboard() {
   const occupancyRate = Math.round(properties.reduce((acc, p) => acc + p.occupancyRate, 0) / totalProperties);
 
   return (
-    <div className="space-y-8">
-      <div className="flex items-center justify-between space-y-2">
+    <div className="space-y-8 max-w-7xl mx-auto">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div>
-          <h2 className="text-3xl font-bold tracking-tight font-heading text-foreground">Dashboard</h2>
-          <p className="text-muted-foreground">
-            Overview of your property portfolio performance.
+          <h2 className="text-3xl font-bold tracking-tight font-heading uppercase text-foreground">Dashboard</h2>
+          <p className="text-[10px] uppercase tracking-widest text-muted-foreground mt-1">
+            Overview of your property portfolio performance
           </p>
         </div>
         <div className="flex items-center space-x-2">
-          <Button variant="outline">Download Report</Button>
-          <Button className="bg-primary text-primary-foreground hover:bg-primary/90 shadow-md hover:shadow-lg transition-all">Add Property</Button>
+          <Button variant="outline" className="rounded-none uppercase tracking-widest text-[10px] font-bold">
+            <Download className="mr-2 h-3 w-3" /> Report
+          </Button>
+          <Button className="bg-primary text-primary-foreground hover:bg-primary/90 shadow-md hover:shadow-lg transition-all rounded-none uppercase tracking-widest text-[10px] font-bold px-6">
+            <Plus className="mr-2 h-3 w-3" /> Add Property
+          </Button>
         </div>
       </div>
 
