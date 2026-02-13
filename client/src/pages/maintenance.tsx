@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link, useLocation } from "wouter";
 import { 
   Wrench, 
   AlertCircle, 
@@ -20,19 +21,43 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { maintenanceRequests, properties, units } from "@/lib/mock-data";
 
 export default function MaintenancePage() {
   const [activeTab, setActiveTab] = useState("all");
+  const [propertyFilter, setPropertyFilter] = useState("all");
+  const [unitFilter, setUnitFilter] = useState("all");
+  const [, setLocation] = useLocation();
 
   const getProperty = (id: string) => properties.find(p => p.id === id);
   const getUnit = (id?: string) => id ? units.find(u => u.id === id) : null;
 
+  // Filter units based on selected property
+  const filteredUnits = unitFilter !== "all" 
+    ? units 
+    : propertyFilter !== "all" 
+      ? units.filter(u => u.propertyId === propertyFilter)
+      : units;
+
   const filteredRequests = maintenanceRequests.filter(req => {
-    if (activeTab === "all") return true;
-    if (activeTab === "open") return req.status === "Open";
-    if (activeTab === "progress") return req.status === "In Progress";
-    if (activeTab === "completed") return req.status === "Completed";
+    // Tab filter
+    if (activeTab === "open" && req.status !== "Open") return false;
+    if (activeTab === "progress" && req.status !== "In Progress") return false;
+    if (activeTab === "completed" && req.status !== "Completed") return false;
+
+    // Property filter
+    if (propertyFilter !== "all" && req.propertyId !== propertyFilter) return false;
+
+    // Unit filter
+    if (unitFilter !== "all" && req.unitId !== unitFilter) return false;
+
     return true;
   });
 
@@ -56,40 +81,66 @@ export default function MaintenancePage() {
   };
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-8 max-w-7xl mx-auto">
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div>
-          <h2 className="text-3xl font-bold tracking-tight font-heading">Maintenance</h2>
-          <p className="text-muted-foreground">
-            Track and manage property maintenance requests.
+          <h2 className="text-3xl font-bold tracking-tight font-heading uppercase">Maintenance</h2>
+          <p className="text-[10px] uppercase tracking-widest text-muted-foreground mt-1">
+            Track and manage property maintenance requests
           </p>
         </div>
-        <Button className="bg-primary text-primary-foreground shadow-md">
-          <Plus className="mr-2 h-4 w-4" /> New Request
+        <Button className="bg-primary text-primary-foreground rounded-none px-6 uppercase tracking-widest text-[10px] font-bold shadow-md">
+          <Plus className="mr-2 h-3 w-3" /> New Request
         </Button>
       </div>
 
-      <div className="flex flex-col md:flex-row gap-4 items-center justify-between">
+      <div className="flex flex-col md:flex-row gap-4 items-center justify-between border-b border-border/50 pb-4">
         <Tabs defaultValue="all" className="w-full md:w-auto" onValueChange={setActiveTab}>
-          <TabsList>
-            <TabsTrigger value="all">All Requests</TabsTrigger>
-            <TabsTrigger value="open">Open</TabsTrigger>
-            <TabsTrigger value="progress">In Progress</TabsTrigger>
-            <TabsTrigger value="completed">Completed</TabsTrigger>
+          <TabsList className="bg-transparent gap-6 h-auto p-0 w-full justify-start rounded-none">
+            <TabsTrigger value="all" className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:shadow-none px-0 pb-3 text-[10px] uppercase tracking-widest font-bold">All Requests</TabsTrigger>
+            <TabsTrigger value="open" className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:shadow-none px-0 pb-3 text-[10px] uppercase tracking-widest font-bold">Open</TabsTrigger>
+            <TabsTrigger value="progress" className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:shadow-none px-0 pb-3 text-[10px] uppercase tracking-widest font-bold">In Progress</TabsTrigger>
+            <TabsTrigger value="completed" className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:shadow-none px-0 pb-3 text-[10px] uppercase tracking-widest font-bold">Completed</TabsTrigger>
           </TabsList>
         </Tabs>
 
-        <div className="flex gap-2 w-full md:w-auto">
-          <div className="relative flex-1 md:w-[250px]">
-            <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+        <div className="flex flex-col sm:flex-row gap-3 w-full md:w-auto items-center">
+          {/* Property Filter */}
+          <Select value={propertyFilter} onValueChange={(val) => {
+            setPropertyFilter(val);
+            setUnitFilter("all"); // Reset unit filter when property changes
+          }}>
+            <SelectTrigger className="w-full sm:w-[200px] h-8 rounded-none border-border/50 text-[10px] uppercase tracking-wider bg-background">
+              <SelectValue placeholder="FILTER BY BUILDING" />
+            </SelectTrigger>
+            <SelectContent className="rounded-none border-border">
+              <SelectItem value="all" className="text-[10px] uppercase tracking-wider">All Buildings</SelectItem>
+              {properties.map(p => (
+                <SelectItem key={p.id} value={p.id} className="text-[10px] uppercase tracking-wider">{p.name}</SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+
+          {/* Unit Filter */}
+          <Select value={unitFilter} onValueChange={setUnitFilter} disabled={propertyFilter === "all"}>
+            <SelectTrigger className="w-full sm:w-[150px] h-8 rounded-none border-border/50 text-[10px] uppercase tracking-wider bg-background">
+              <SelectValue placeholder="FILTER BY UNIT" />
+            </SelectTrigger>
+            <SelectContent className="rounded-none border-border">
+              <SelectItem value="all" className="text-[10px] uppercase tracking-wider">All Units</SelectItem>
+              {filteredUnits.map(u => (
+                <SelectItem key={u.id} value={u.id} className="text-[10px] uppercase tracking-wider">Unit {u.unitNumber}</SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+
+          <div className="relative w-full sm:w-[200px]">
+            <Search className="absolute left-2 top-2.5 h-3 w-3 text-muted-foreground" />
             <Input
-              placeholder="Search requests..."
-              className="pl-9"
+              placeholder="SEARCH..."
+              className="pl-7 h-8 text-[10px] rounded-none uppercase tracking-widest bg-muted/30 border-none"
             />
           </div>
-          <Button variant="outline" size="icon">
-            <Filter className="h-4 w-4" />
-          </Button>
         </div>
       </div>
 
@@ -99,25 +150,29 @@ export default function MaintenancePage() {
           const unit = getUnit(request.unitId);
           
           return (
-            <Card key={request.id} className="hover:shadow-md transition-all duration-200 border-border/60">
+            <Card 
+              key={request.id} 
+              className="rounded-none hover:border-primary transition-all duration-300 border-border/50 cursor-pointer group"
+              onClick={() => setLocation(`/maintenance/${request.id}`)}
+            >
               <CardContent className="p-6">
                 <div className="flex flex-col md:flex-row md:items-center gap-4 justify-between">
                   <div className="flex items-start gap-4">
-                    <div className={`mt-1 h-10 w-10 rounded-full flex items-center justify-center bg-muted`}>
+                    <div className={`mt-1 h-10 w-10 flex items-center justify-center bg-muted border border-border/50`}>
                       {getStatusIcon(request.status)}
                     </div>
                     <div className="space-y-1">
-                      <div className="flex items-center gap-2">
-                        <h4 className="font-semibold text-lg">{request.title}</h4>
-                        <Badge variant="outline" className={getPriorityColor(request.priority)}>
+                      <div className="flex items-center gap-3">
+                        <h4 className="font-bold text-sm uppercase tracking-wide group-hover:text-primary transition-colors">{request.title}</h4>
+                        <Badge variant="outline" className={`rounded-none uppercase tracking-widest text-[8px] font-bold ${getPriorityColor(request.priority)}`}>
                           {request.priority}
                         </Badge>
                       </div>
-                      <p className="text-sm text-muted-foreground max-w-xl">
+                      <p className="text-xs text-muted-foreground max-w-xl line-clamp-1">
                         {request.description}
                       </p>
-                      <div className="flex items-center gap-4 text-xs text-muted-foreground pt-1">
-                        <span className="flex items-center gap-1 font-medium text-foreground">
+                      <div className="flex items-center gap-4 text-[10px] uppercase tracking-widest text-muted-foreground pt-2">
+                        <span className="flex items-center gap-1 font-bold text-foreground">
                           <Wrench className="h-3 w-3" />
                           {property?.name} {unit ? `• Unit ${unit.unitNumber}` : '• General Property'}
                         </span>
@@ -126,25 +181,25 @@ export default function MaintenancePage() {
                         {request.assignedTo && (
                           <>
                             <span>•</span>
-                            <span>Assigned to: {request.assignedTo}</span>
+                            <span>Assigned: {request.assignedTo}</span>
                           </>
                         )}
                       </div>
                     </div>
                   </div>
                   
-                  <div className="flex items-center gap-2 md:self-center self-end">
+                  <div className="flex items-center gap-2 md:self-center self-end" onClick={(e) => e.stopPropagation()}>
                     <DropdownMenu>
                       <DropdownMenuTrigger asChild>
-                        <Button variant="ghost" size="icon">
+                        <Button variant="ghost" size="icon" className="rounded-none h-8 w-8">
                           <MoreHorizontal className="h-4 w-4" />
                         </Button>
                       </DropdownMenuTrigger>
-                      <DropdownMenuContent align="end">
-                        <DropdownMenuItem>Update Status</DropdownMenuItem>
-                        <DropdownMenuItem>Assign Crew</DropdownMenuItem>
-                        <DropdownMenuItem>View Details</DropdownMenuItem>
-                        <DropdownMenuItem className="text-destructive">Delete Request</DropdownMenuItem>
+                      <DropdownMenuContent align="end" className="rounded-none border-border">
+                        <DropdownMenuItem className="text-[10px] uppercase tracking-widest">Update Status</DropdownMenuItem>
+                        <DropdownMenuItem className="text-[10px] uppercase tracking-widest">Assign Crew</DropdownMenuItem>
+                        <DropdownMenuItem className="text-[10px] uppercase tracking-widest">View Details</DropdownMenuItem>
+                        <DropdownMenuItem className="text-[10px] uppercase tracking-widest text-destructive">Delete Request</DropdownMenuItem>
                       </DropdownMenuContent>
                     </DropdownMenu>
                   </div>
