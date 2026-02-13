@@ -136,29 +136,29 @@ export default function Dashboard() {
 
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
         {properties.map(property => (
-          <Card key={property.id} className="overflow-hidden hover:shadow-md transition-shadow duration-300 border-border/60 group">
-            <div className="relative h-48 w-full overflow-hidden">
+          <Card key={property.id} className="rounded-none overflow-hidden hover:border-primary transition-all duration-500 border-border/50 group">
+            <div className="relative h-64 w-full overflow-hidden grayscale hover:grayscale-0 transition-all duration-700">
                <img 
                 src={property.image} 
                 alt={property.name}
-                className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                className="h-full w-full object-cover transition-transform duration-1000 group-hover:scale-105"
               />
-              <div className="absolute top-2 right-2 bg-background/90 backdrop-blur-sm px-2 py-1 rounded-md text-xs font-semibold shadow-sm border border-border/50">
+              <div className="absolute top-4 right-4 bg-primary text-primary-foreground px-3 py-1 text-[10px] uppercase tracking-widest font-bold">
                 {property.type}
               </div>
             </div>
             <CardHeader className="pb-2">
-              <CardTitle className="font-heading text-lg">{property.name}</CardTitle>
-              <CardDescription className="line-clamp-1">{property.address}</CardDescription>
+              <CardTitle className="font-heading text-lg uppercase tracking-tight">{property.name}</CardTitle>
+              <CardDescription className="text-[10px] uppercase tracking-widest">{property.address}</CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="flex justify-between text-sm mb-4">
-                <span className="text-muted-foreground">Occupancy</span>
-                <span className="font-medium text-foreground">{property.occupancyRate}%</span>
+              <div className="flex justify-between text-[10px] uppercase tracking-widest mb-2 font-bold">
+                <span>Occupancy</span>
+                <span>{property.occupancyRate}%</span>
               </div>
-              <div className="w-full bg-secondary h-2 rounded-full overflow-hidden">
+              <div className="w-full bg-secondary h-[1px]">
                 <div 
-                  className="bg-primary h-full rounded-full" 
+                  className="bg-primary h-full" 
                   style={{ width: `${property.occupancyRate}%` }} 
                 />
               </div>
@@ -172,24 +172,16 @@ export default function Dashboard() {
 
 function StatsCard({ title, value, description, icon: Icon, trend, trendUp, trendColor }: any) {
   return (
-    <Card className="shadow-sm border-border/60 hover:border-primary/20 transition-colors">
+    <Card className="rounded-none border-border/50 bg-background hover:border-primary transition-all duration-300">
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-        <CardTitle className="text-sm font-medium text-muted-foreground font-sans">
+        <CardTitle className="text-xs font-bold uppercase tracking-widest text-muted-foreground font-sans">
           {title}
         </CardTitle>
-        <Icon className="h-4 w-4 text-muted-foreground" />
+        <Icon className="h-4 w-4 text-muted-foreground stroke-[1.5]" />
       </CardHeader>
       <CardContent>
-        <div className="text-2xl font-bold font-heading">{value}</div>
-        <p className="text-xs text-muted-foreground mt-1 flex items-center">
-          {trend && (
-            <span className={`flex items-center mr-1 ${trendColor ? trendColor : (trendUp ? "text-emerald-600" : "text-destructive")}`}>
-              {trendUp ? <ArrowUpRight className="h-3 w-3 mr-0.5" /> : <ArrowDownRight className="h-3 w-3 mr-0.5" />}
-              {trend}
-            </span>
-          )}
-        </p>
-        {description && <p className="text-xs text-muted-foreground mt-1">{description}</p>}
+        <div className="text-3xl font-medium font-heading tracking-tight">{value}</div>
+        {description && <p className="text-[10px] uppercase tracking-wider text-muted-foreground mt-2">{description}</p>}
       </CardContent>
     </Card>
   );

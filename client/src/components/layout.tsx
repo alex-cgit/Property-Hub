@@ -94,54 +94,34 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 function AppSidebar({ location, navItems }: { location: string, navItems: any[] }) {
   return (
     <Sidebar collapsible="icon" className="border-r border-border bg-sidebar text-sidebar-foreground">
-      <SidebarHeader className="h-16 flex items-center justify-center border-b border-sidebar-border/50">
-        <div className="flex items-center gap-2 px-2 font-heading font-bold text-xl tracking-tight text-sidebar-primary-foreground">
-          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-primary-foreground">
-            <Building2 className="size-5" />
+      <SidebarHeader className="h-20 flex items-center justify-center border-b border-sidebar-border/30">
+        <div className="flex items-center gap-3 px-2 font-heading font-semibold text-lg tracking-tight">
+          <div className="flex h-10 w-10 items-center justify-center rounded-none bg-primary text-primary-foreground">
+            <Building2 className="size-6 stroke-[1.5]" />
           </div>
-          <span className="group-data-[collapsible=icon]:hidden">PropMaster</span>
+          <span className="group-data-[collapsible=icon]:hidden uppercase tracking-widest">PROP</span>
         </div>
       </SidebarHeader>
       
       <SidebarContent className="gap-0">
-        <SidebarGroup className="pt-4">
-          <SidebarGroupLabel className="text-sidebar-foreground/70 uppercase tracking-wider text-xs font-semibold px-4 mb-2">Platform</SidebarGroupLabel>
+        <SidebarGroup className="pt-6">
           <SidebarGroupContent>
-            <SidebarMenu>
+            <SidebarMenu className="gap-1 px-2">
               {navItems.map((item) => (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton 
                     asChild 
                     isActive={location === item.url || (item.url !== "/" && location.startsWith(item.url))}
                     tooltip={item.title}
-                    className="gap-3 px-4 py-3 h-auto text-sidebar-foreground/80 hover:bg-sidebar-accent hover:text-sidebar-accent-foreground data-[active=true]:bg-sidebar-primary data-[active=true]:text-sidebar-primary-foreground transition-all duration-200"
+                    className="gap-4 px-4 py-6 h-auto rounded-none text-sidebar-foreground/60 hover:bg-sidebar-accent hover:text-sidebar-accent-foreground data-[active=true]:bg-transparent data-[active=true]:text-sidebar-primary data-[active=true]:font-bold border-l-2 border-transparent data-[active=true]:border-primary transition-all duration-200"
                   >
                     <Link href={item.url}>
-                      <item.icon className="h-5 w-5" />
-                      <span className="font-medium text-sm">{item.title}</span>
+                      <item.icon className="h-5 w-5 stroke-[1.5]" />
+                      <span className="text-sm uppercase tracking-wider">{item.title}</span>
                     </Link>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
               ))}
-            </SidebarMenu>
-          </SidebarGroupContent>
-        </SidebarGroup>
-
-        <SidebarGroup className="mt-auto pb-4">
-          <SidebarGroupContent>
-            <SidebarMenu>
-              <SidebarMenuItem>
-                <SidebarMenuButton 
-                  asChild 
-                  tooltip="Settings"
-                  className="gap-3 px-4 py-3 h-auto text-sidebar-foreground/80 hover:bg-sidebar-accent hover:text-sidebar-accent-foreground transition-all duration-200"
-                >
-                  <Link href="/settings">
-                    <Settings className="h-5 w-5" />
-                    <span className="font-medium text-sm">Settings</span>
-                  </Link>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
