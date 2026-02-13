@@ -11,6 +11,9 @@ import TenantsPage from "@/pages/tenants";
 import MaintenancePage from "@/pages/maintenance";
 import FinancialsPage from "@/pages/financials";
 import GeneralLedgerPage from "@/pages/ledger";
+import PartiesPage from "@/pages/parties";
+import JournalEntryFormPage from "@/pages/journal-entry-form";
+import ReportsPage from "@/pages/reports";
 
 function Router() {
   return (
@@ -22,6 +25,9 @@ function Router() {
         <Route path="/maintenance" component={MaintenancePage} />
         <Route path="/financials" component={FinancialsPage} />
         <Route path="/ledger" component={GeneralLedgerPage} />
+        <Route path="/parties" component={PartiesPage} />
+        <Route path="/journal-entries/new" component={JournalEntryFormPage} />
+        <Route path="/reports" component={ReportsPage} />
         <Route component={NotFound} />
       </Switch>
     </Layout>

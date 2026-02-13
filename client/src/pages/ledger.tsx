@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useLocation } from "wouter";
 import { 
   Plus, 
   Search, 
@@ -169,72 +170,15 @@ function AccountsGrid() {
 }
 
 function NewJournalEntryDialog() {
+  const [, setLocation] = useLocation();
+  
   return (
-    <Dialog>
-      <DialogTrigger asChild>
-        <Button variant="outline" className="rounded-none border-border/50 uppercase tracking-widest text-[10px] font-bold">
-          <Plus className="mr-2 h-3 w-3" /> Manual Entry
-        </Button>
-      </DialogTrigger>
-      <DialogContent className="max-w-2xl rounded-none border-border">
-        <DialogHeader>
-          <DialogTitle className="uppercase tracking-widest font-bold">New Journal Entry</DialogTitle>
-          <DialogDescription className="text-[10px] uppercase tracking-widest">
-            Ensure debits and credits are balanced
-          </DialogDescription>
-        </DialogHeader>
-        
-        <div className="grid gap-6 py-4">
-          <div className="grid grid-cols-2 gap-4">
-            <div className="space-y-2">
-              <label className="text-[8px] uppercase tracking-widest font-bold">Date</label>
-              <Input type="date" className="rounded-none h-10" />
-            </div>
-            <div className="space-y-2">
-              <label className="text-[8px] uppercase tracking-widest font-bold">Description</label>
-              <Input placeholder="Entry description..." className="rounded-none h-10" />
-            </div>
-          </div>
-          
-          <div className="space-y-4">
-            <div className="flex items-center justify-between">
-              <h4 className="text-[10px] uppercase tracking-widest font-bold">Entry Lines</h4>
-              <Button variant="ghost" size="sm" className="text-[8px] uppercase tracking-widest h-6 px-2">
-                <Split className="mr-1 h-3 w-3" /> Split Expense
-              </Button>
-            </div>
-            
-            <div className="space-y-2 border border-border/30 p-4 bg-muted/10">
-              <div className="grid grid-cols-4 gap-2 pb-2 border-b border-border/30 mb-2">
-                <span className="text-[8px] uppercase tracking-widest font-bold">Account</span>
-                <span className="text-[8px] uppercase tracking-widest font-bold">Memo</span>
-                <span className="text-[8px] uppercase tracking-widest font-bold text-right">Debit</span>
-                <span className="text-[8px] uppercase tracking-widest font-bold text-right">Credit</span>
-              </div>
-              {[1, 2].map(i => (
-                <div key={i} className="grid grid-cols-4 gap-2">
-                  <div className="bg-background h-8 border border-border/30 flex items-center px-2 text-[10px] uppercase tracking-tight truncate">
-                    Select Account...
-                  </div>
-                  <Input placeholder="Memo" className="h-8 rounded-none border-border/30 text-[10px]" />
-                  <Input placeholder="0.00" className="h-8 rounded-none border-border/30 text-right text-[10px]" />
-                  <Input placeholder="0.00" className="h-8 rounded-none border-border/30 text-right text-[10px]" />
-                </div>
-              ))}
-              <div className="grid grid-cols-4 gap-2 pt-4">
-                <div className="col-span-2 text-right text-[10px] uppercase tracking-widest font-bold">Total</div>
-                <div className="text-right text-[10px] font-mono">$0.00</div>
-                <div className="text-right text-[10px] font-mono">$0.00</div>
-              </div>
-            </div>
-          </div>
-        </div>
-        
-        <DialogFooter>
-          <Button variant="outline" className="rounded-none uppercase tracking-widest text-[10px]">Cancel</Button>
-          <Button className="rounded-none uppercase tracking-widest text-[10px] bg-primary">Post Entry</Button>
-        </DialogFooter>
-      </DialogContent>
-    </Dialog>
+    <Button 
+      variant="outline" 
+      className="rounded-none border-border/50 uppercase tracking-widest text-[10px] font-bold"
+      onClick={() => setLocation("/journal-entries/new")}
+    >
+      <Plus className="mr-2 h-3 w-3" /> New Entry
+    </Button>
   );
 }

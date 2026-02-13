@@ -12,7 +12,9 @@ import {
   Menu,
   LogOut,
   ChevronDown,
-  FileText
+  FileText,
+  Briefcase,
+  ClipboardList
 } from "lucide-react";
 import { 
   Sidebar, 
@@ -49,9 +51,11 @@ export default function Layout({ children }: { children: React.ReactNode }) {
     { title: "Dashboard", icon: LayoutDashboard, url: "/" },
     { title: "Properties", icon: Building2, url: "/properties" },
     { title: "Tenants & Leases", icon: Users, url: "/tenants" },
+    { title: "Parties", icon: Briefcase, url: "/parties" },
     { title: "Maintenance", icon: Wrench, url: "/maintenance" },
     { title: "Financials", icon: DollarSign, url: "/financials" },
     { title: "General Ledger", icon: FileText, url: "/ledger" },
+    { title: "Reports", icon: ClipboardList, url: "/reports" },
   ];
 
   return (
