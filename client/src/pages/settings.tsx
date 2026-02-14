@@ -56,6 +56,9 @@ export default function SettingsPage() {
           <TabsTrigger value="general" className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:shadow-none px-0 pb-3 text-[10px] uppercase tracking-widest font-bold flex items-center gap-2">
             <Building2 className="h-4 w-4" /> General
           </TabsTrigger>
+          <TabsTrigger value="properties" className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:shadow-none px-0 pb-3 text-[10px] uppercase tracking-widest font-bold flex items-center gap-2">
+            <Building2 className="h-4 w-4" /> Properties
+          </TabsTrigger>
           <TabsTrigger value="users" className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:shadow-none px-0 pb-3 text-[10px] uppercase tracking-widest font-bold flex items-center gap-2">
             <Users className="h-4 w-4" /> Users
           </TabsTrigger>
@@ -136,6 +139,61 @@ export default function SettingsPage() {
               </CardContent>
             </Card>
           </div>
+        </TabsContent>
+
+        <TabsContent value="properties" className="space-y-6 animate-in fade-in slide-in-from-bottom-2 duration-500">
+           <Card className="rounded-none border-border/50 shadow-sm">
+              <CardHeader className="bg-muted/30 border-b border-border/50 py-4 flex flex-row items-center justify-between">
+                <div>
+                  <CardTitle className="text-xs font-bold uppercase tracking-widest">Property Management</CardTitle>
+                  <CardDescription className="text-[10px] uppercase tracking-widest">Add and configure properties and units</CardDescription>
+                </div>
+                <Button size="sm" className="bg-primary text-primary-foreground rounded-none uppercase tracking-widest text-[10px] font-bold">
+                  <Plus className="mr-2 h-3 w-3" /> Add Property
+                </Button>
+              </CardHeader>
+              <CardContent className="p-0">
+                <Table>
+                  <TableHeader>
+                    <TableRow className="hover:bg-transparent border-border/50">
+                      <TableHead className="text-[10px] uppercase tracking-widest font-bold h-10">Property</TableHead>
+                      <TableHead className="text-[10px] uppercase tracking-widest font-bold h-10">Type</TableHead>
+                      <TableHead className="text-[10px] uppercase tracking-widest font-bold h-10">Units</TableHead>
+                      <TableHead className="text-[10px] uppercase tracking-widest font-bold h-10">Address</TableHead>
+                      <TableHead className="text-[10px] uppercase tracking-widest font-bold h-10 text-right">Actions</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {portfolios.find(p => p.id === selectedPortfolioId) ? (
+                       // In a real app we'd filter properties by portfolio, but using mock data here
+                       // We'll just show the mock properties for display purposes
+                       [
+                          { id: "prop-1", name: "Sunset Heights Apartments", type: "Residential", units: 24, address: "123 Sunset Blvd, Los Angeles, CA" },
+                          { id: "prop-2", name: "Oakwood Business Park", type: "Commercial", units: 12, address: "450 Oakwood Dr, Pasadena, CA" },
+                          { id: "prop-3", name: "The Highland Lofts", type: "Residential", units: 45, address: "789 Highland Ave, Seattle, WA" }
+                       ].map(prop => (
+                        <TableRow key={prop.id} className="group hover:bg-muted/20 border-border/30">
+                          <TableCell className="py-3 font-medium text-xs">{prop.name}</TableCell>
+                          <TableCell className="py-3"><Badge variant="outline" className="rounded-none uppercase tracking-widest text-[8px]">{prop.type}</Badge></TableCell>
+                          <TableCell className="py-3 text-xs font-mono">{prop.units}</TableCell>
+                          <TableCell className="py-3 text-xs text-muted-foreground">{prop.address}</TableCell>
+                          <TableCell className="py-3 text-right">
+                            <div className="flex justify-end gap-2">
+                               <Button variant="ghost" size="sm" className="h-8 rounded-none text-[10px] uppercase tracking-widest font-bold">Edit</Button>
+                               <Button variant="ghost" size="sm" className="h-8 rounded-none text-[10px] uppercase tracking-widest font-bold">Units</Button>
+                            </div>
+                          </TableCell>
+                        </TableRow>
+                       ))
+                    ) : (
+                      <TableRow>
+                        <TableCell colSpan={5} className="text-center py-8 text-muted-foreground text-xs uppercase tracking-widest">Select a portfolio to manage properties</TableCell>
+                      </TableRow>
+                    )}
+                  </TableBody>
+                </Table>
+              </CardContent>
+           </Card>
         </TabsContent>
 
         <TabsContent value="users" className="space-y-6 animate-in fade-in slide-in-from-bottom-2 duration-500">

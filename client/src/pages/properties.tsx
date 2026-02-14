@@ -24,22 +24,6 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { 
-  Sheet,
-  SheetContent,
-  SheetDescription,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from "@/components/ui/sheet";
-import { 
-  Table, 
-  TableBody, 
-  TableCell, 
-  TableHead, 
-  TableHeader, 
-  TableRow 
-} from "@/components/ui/table";
 import { units, maintenanceRequests } from "@/lib/mock-data";
 import { usePortfolio } from "@/lib/portfolio-context";
 
@@ -47,7 +31,7 @@ export default function PropertiesPage() {
   const [searchTerm, setSearchTerm] = useState("");
   const [activeTab, setActiveTab] = useState("all");
   const { filteredProperties: properties } = usePortfolio();
-  const [selectedPropertyId, setSelectedPropertyId] = useState<string | null>(null);
+  const [, setLocation] = useLocation();
 
   const filteredProperties = properties.filter(p => {
     const matchesSearch = p.name.toLowerCase().includes(searchTerm.toLowerCase()) || 
@@ -58,9 +42,6 @@ export default function PropertiesPage() {
     
     return matchesSearch && matchesType;
   });
-
-  const selectedProperty = properties.find(p => p.id === selectedPropertyId);
-  const propertyUnits = selectedProperty ? units.filter(u => u.propertyId === selectedProperty.id) : [];
 
   return (
     <div className="space-y-8 max-w-7xl mx-auto">
@@ -103,87 +84,10 @@ export default function PropertiesPage() {
           <PropertyCard 
             key={property.id} 
             property={property} 
-            onSelect={() => setSelectedPropertyId(property.id)} 
+            onSelect={() => setLocation(`/properties/${property.id}`)} 
           />
         ))}
       </div>
-
-      <Sheet open={!!selectedPropertyId} onOpenChange={(open) => !open && setSelectedPropertyId(null)}>
-        <SheetContent className="sm:max-w-[600px] w-full border-l border-border p-0" side="right">
-          {selectedProperty && (
-            <div className="h-full flex flex-col">
-              <SheetHeader className="p-6 border-b border-border/50 bg-muted/10">
-                <div className="flex flex-col gap-2">
-                  <Badge variant="outline" className="w-fit rounded-none text-[8px] uppercase tracking-widest">{selectedProperty.type}</Badge>
-                  <SheetTitle className="text-xl font-heading uppercase tracking-tight">{selectedProperty.name}</SheetTitle>
-                  <SheetDescription className="text-xs flex items-center gap-1">
-                    <MapPin className="h-3 w-3" /> {selectedProperty.address}
-                  </SheetDescription>
-                </div>
-              </SheetHeader>
-              
-              <div className="flex-1 overflow-auto">
-                <div className="p-6 space-y-6">
-                  <div className="grid grid-cols-2 gap-4">
-                    <div className="p-4 bg-muted/30 border border-border/50">
-                      <div className="text-[10px] uppercase tracking-widest text-muted-foreground font-bold mb-1">Total Units</div>
-                      <div className="text-2xl font-bold">{propertyUnits.length}</div>
-                    </div>
-                    <div className="p-4 bg-muted/30 border border-border/50">
-                      <div className="text-[10px] uppercase tracking-widest text-muted-foreground font-bold mb-1">Occupancy</div>
-                      <div className={`text-2xl font-bold ${selectedProperty.occupancyRate >= 90 ? 'text-emerald-600' : 'text-amber-600'}`}>
-                        {selectedProperty.occupancyRate}%
-                      </div>
-                    </div>
-                  </div>
-
-                  <div>
-                    <h3 className="text-xs font-bold uppercase tracking-widest mb-4 flex items-center gap-2">
-                      <Building2 className="h-4 w-4 text-primary" /> Units List
-                    </h3>
-                    <div className="border border-border/50 rounded-none overflow-hidden">
-                      <Table>
-                        <TableHeader className="bg-muted/30">
-                          <TableRow className="hover:bg-transparent border-b border-border/50">
-                            <TableHead className="text-[8px] uppercase tracking-widest font-bold h-8">Unit</TableHead>
-                            <TableHead className="text-[8px] uppercase tracking-widest font-bold h-8">Status</TableHead>
-                            <TableHead className="text-[8px] uppercase tracking-widest font-bold h-8 text-right">Rent</TableHead>
-                            <TableHead className="text-[8px] uppercase tracking-widest font-bold h-8 text-right">Size</TableHead>
-                          </TableRow>
-                        </TableHeader>
-                        <TableBody>
-                          {propertyUnits.map((unit) => (
-                            <TableRow key={unit.id} className="hover:bg-muted/20 border-b border-border/30 last:border-0">
-                              <TableCell className="py-3 font-medium text-xs">
-                                {unit.unitNumber}
-                                <div className="text-[8px] text-muted-foreground uppercase tracking-widest">{unit.bedrooms} Bed • {unit.bathrooms} Bath</div>
-                              </TableCell>
-                              <TableCell className="py-3">
-                                <Badge variant="outline" className={`rounded-none uppercase tracking-widest text-[8px] border-0 
-                                  ${unit.status === 'Occupied' ? 'bg-emerald-500/10 text-emerald-600' : 
-                                    unit.status === 'Vacant' ? 'bg-destructive/10 text-destructive' : 
-                                    'bg-amber-500/10 text-amber-600'}`}>
-                                  {unit.status}
-                                </Badge>
-                              </TableCell>
-                              <TableCell className="py-3 text-right text-xs font-mono">${unit.rent}</TableCell>
-                              <TableCell className="py-3 text-right text-xs font-mono">{unit.size} sqft</TableCell>
-                            </TableRow>
-                          ))}
-                        </TableBody>
-                      </Table>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              
-              <div className="p-4 border-t border-border/50 bg-background mt-auto">
-                <Button className="w-full rounded-none uppercase tracking-widest text-[10px] font-bold">Manage Property Details</Button>
-              </div>
-            </div>
-          )}
-        </SheetContent>
-      </Sheet>
     </div>
   );
 }

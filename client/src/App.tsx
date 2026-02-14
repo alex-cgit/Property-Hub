@@ -9,6 +9,7 @@ import Layout from "@/components/layout";
 import Dashboard from "@/pages/dashboard";
 import LandingPage from "@/pages/landing";
 import PropertiesPage from "@/pages/properties";
+import PropertyDetailPage from "@/pages/property-details";
 import TenantsPage from "@/pages/tenants";
 import MaintenancePage from "@/pages/maintenance";
 import RequestDetailPage from "@/pages/maintenance-detail";
@@ -26,6 +27,7 @@ function AppRouter() {
       <Switch>
         <Route path="/dashboard" component={Dashboard} />
         <Route path="/properties" component={PropertiesPage} />
+        <Route path="/properties/:id" component={PropertyDetailPage} />
         <Route path="/tenants" component={TenantsPage} />
         <Route path="/maintenance" component={MaintenancePage} />
         <Route path="/maintenance/:id" component={RequestDetailPage} />
