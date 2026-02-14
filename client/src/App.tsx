@@ -17,7 +17,6 @@ import GeneralLedgerPage from "@/pages/ledger";
 import PartiesPage from "@/pages/parties";
 import JournalEntryFormPage from "@/pages/journal-entry-form";
 import ReportsPage from "@/pages/reports";
-import PortfoliosPage from "@/pages/portfolios";
 
 import SettingsPage from "@/pages/settings";
 
@@ -26,7 +25,6 @@ function AppRouter() {
     <Layout>
       <Switch>
         <Route path="/dashboard" component={Dashboard} />
-        <Route path="/portfolios" component={PortfoliosPage} />
         <Route path="/properties" component={PropertiesPage} />
         <Route path="/tenants" component={TenantsPage} />
         <Route path="/maintenance" component={MaintenancePage} />

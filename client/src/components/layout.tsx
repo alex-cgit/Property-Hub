@@ -54,7 +54,6 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 
   const navItems = [
     { title: "Dashboard", icon: LayoutDashboard, url: "/dashboard" },
-    { title: "Portfolios", icon: Briefcase, url: "/portfolios" },
     { title: "Properties", icon: Building2, url: "/properties" },
     { title: "Tenants & Leases", icon: Users, url: "/tenants" },
     { title: "Parties", icon: Users, url: "/parties" },
@@ -79,12 +78,6 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             </Link>
             <Separator orientation="vertical" className="h-6 hidden md:block" />
             
-            <div className="flex items-center gap-2 hidden md:flex">
-               <Briefcase className="h-4 w-4 text-primary" />
-               <span className="text-sm font-bold uppercase tracking-wider text-muted-foreground hidden md:inline-block">Portfolio:</span>
-               <span className="text-sm font-bold uppercase tracking-tight">{selectedPortfolio?.name || "Select Portfolio"}</span>
-            </div>
-
             <div className="flex-1"></div>
 
             <div className="flex items-center gap-4">
@@ -123,36 +116,12 @@ function AppSidebar({ location, navItems }: { location: string, navItems: any[] 
       className="border-r border-border bg-sidebar text-sidebar-foreground transition-all duration-300 ease-in-out group-data-[collapsible=icon]:w-[60px]"
     >
       <SidebarHeader className="h-20 flex items-center justify-center border-b border-sidebar-border/30 overflow-hidden px-2">
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="w-full justify-start gap-2 px-2 hover:bg-sidebar-accent group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:px-0">
-              <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-sm bg-primary text-primary-foreground">
-                <Building2 className="size-5" />
-              </div>
-              <div className="flex flex-col items-start text-left group-data-[collapsible=icon]:hidden overflow-hidden">
-                <span className="truncate font-semibold text-xs uppercase tracking-wider">{selectedPortfolio?.code || "SEL"}</span>
-                <span className="truncate text-[10px] text-muted-foreground uppercase tracking-widest">Portfolio</span>
-              </div>
-              <ChevronDown className="ml-auto size-4 group-data-[collapsible=icon]:hidden opacity-50" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent className="w-[200px] rounded-none border-border" align="start">
-            <DropdownMenuLabel className="text-[10px] uppercase tracking-widest text-muted-foreground">Switch Portfolio</DropdownMenuLabel>
-            {portfolios.map(portfolio => (
-              <DropdownMenuItem 
-                key={portfolio.id} 
-                className="text-xs font-medium uppercase tracking-wide cursor-pointer"
-                onClick={() => setSelectedPortfolioId(portfolio.id)}
-              >
-                <span className={selectedPortfolioId === portfolio.id ? "text-primary font-bold" : ""}>{portfolio.name}</span>
-              </DropdownMenuItem>
-            ))}
-            <DropdownMenuSeparator />
-            <DropdownMenuItem className="text-[10px] uppercase tracking-widest cursor-pointer">
-              <Plus className="mr-2 h-3 w-3" /> New Portfolio
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
+        <div className="flex items-center gap-3 px-2 font-heading font-semibold text-lg tracking-tight w-full justify-start group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:px-0">
+          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-none bg-primary text-primary-foreground">
+            <Building2 className="size-6 stroke-[1.5]" />
+          </div>
+          <span className="group-data-[collapsible=icon]:hidden uppercase tracking-widest whitespace-nowrap">PROP</span>
+        </div>
       </SidebarHeader>
       
       <SidebarContent className="gap-0 py-4">
