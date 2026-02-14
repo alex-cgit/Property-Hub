@@ -22,11 +22,13 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { properties, units } from "@/lib/mock-data";
+import { units } from "@/lib/mock-data";
+import { usePortfolio } from "@/lib/portfolio-context";
 
 export default function PropertiesPage() {
   const [searchTerm, setSearchTerm] = useState("");
   const [activeTab, setActiveTab] = useState("all");
+  const { filteredProperties: properties } = usePortfolio();
 
   const filteredProperties = properties.filter(p => {
     const matchesSearch = p.name.toLowerCase().includes(searchTerm.toLowerCase()) || 

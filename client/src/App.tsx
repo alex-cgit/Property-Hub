@@ -3,6 +3,7 @@ import { queryClient } from "./lib/queryClient";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
+import { PortfolioProvider } from "@/lib/portfolio-context";
 import NotFound from "@/pages/not-found";
 import Layout from "@/components/layout";
 import Dashboard from "@/pages/dashboard";
@@ -14,12 +15,14 @@ import GeneralLedgerPage from "@/pages/ledger";
 import PartiesPage from "@/pages/parties";
 import JournalEntryFormPage from "@/pages/journal-entry-form";
 import ReportsPage from "@/pages/reports";
+import PortfoliosPage from "@/pages/portfolios";
 
 function Router() {
   return (
     <Layout>
       <Switch>
         <Route path="/" component={Dashboard} />
+        <Route path="/portfolios" component={PortfoliosPage} />
         <Route path="/properties" component={PropertiesPage} />
         <Route path="/tenants" component={TenantsPage} />
         <Route path="/maintenance" component={MaintenancePage} />
@@ -38,8 +41,10 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
-        <Toaster />
-        <Router />
+        <PortfolioProvider>
+          <Toaster />
+          <Router />
+        </PortfolioProvider>
       </TooltipProvider>
     </QueryClientProvider>
   );

@@ -8,8 +8,16 @@ import {
   Clock
 } from "lucide-react";
 
+export interface Portfolio {
+  id: string;
+  name: string;
+  code: string;
+  status: "Active" | "Inactive";
+}
+
 export interface Property {
   id: string;
+  portfolioId: string;
   name: string;
   address: string;
   image: string;
@@ -73,9 +81,15 @@ export interface FinancialRecord {
 }
 
 // Mock Data
+export const portfolios: Portfolio[] = [
+  { id: "port-1", name: "West Coast Holdings", code: "WCH", status: "Active" },
+  { id: "port-2", name: "Eastern Ventures", code: "EST", status: "Active" },
+];
+
 export const properties: Property[] = [
   {
     id: "prop-1",
+    portfolioId: "port-1",
     name: "Sunset Heights Apartments",
     address: "123 Sunset Blvd, Los Angeles, CA",
     image: "/src/assets/images/property-1.jpg",
@@ -85,6 +99,7 @@ export const properties: Property[] = [
   },
   {
     id: "prop-2",
+    portfolioId: "port-1",
     name: "Oakwood Business Park",
     address: "450 Oakwood Dr, Pasadena, CA",
     image: "/src/assets/images/property-2.jpg",
@@ -94,6 +109,7 @@ export const properties: Property[] = [
   },
   {
     id: "prop-3",
+    portfolioId: "port-2",
     name: "The Highland Lofts",
     address: "789 Highland Ave, Seattle, WA",
     image: "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3",
