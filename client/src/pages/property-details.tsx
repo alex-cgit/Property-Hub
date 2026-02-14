@@ -22,7 +22,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { units, maintenanceRequests, tenants, leases } from "@/lib/mock-data";
+import { units, maintenanceRequests, tenants, leases, properties } from "@/lib/mock-data";
 import { usePortfolio } from "@/lib/portfolio-context";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 
@@ -35,7 +35,19 @@ export default function PropertyDetailPage() {
   // Fallback to extraction from window location if useRoute fails in nested context
   const propertyId = params?.id || window.location.pathname.split("/").pop();
   
-  const property = filteredProperties.find(p => p.id === propertyId);
+  // Fallback: if property not found in filtered list, check ALL properties
+  // This handles the case where we deep link to a property in a different portfolio
+  // Also import 'properties' from mock-data to use it here
+  const property = filteredProperties.find(p => p.id === propertyId) || 
+                   properties.find(p => p.id === propertyId);
+
+  // Debugging
+  console.log("PropertyDetailPage render");
+  console.log("params:", params);
+  console.log("pathname:", window.location.pathname);
+  console.log("propertyId:", propertyId);
+  console.log("filteredProperties:", filteredProperties);
+  console.log("found property:", property);
 
   if (!property) {
     return (

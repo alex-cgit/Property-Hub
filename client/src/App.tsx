@@ -21,38 +21,6 @@ import ReportsPage from "@/pages/reports";
 
 import SettingsPage from "@/pages/settings";
 
-function AppRouter() {
-  return (
-    <Layout>
-      <Switch>
-        <Route path="/dashboard" component={Dashboard} />
-        <Route path="/properties" component={PropertiesPage} />
-        <Route path="/properties/:id" component={PropertyDetailPage} />
-        <Route path="/tenants" component={TenantsPage} />
-        <Route path="/maintenance" component={MaintenancePage} />
-        <Route path="/maintenance/:id" component={RequestDetailPage} />
-        <Route path="/financials" component={FinancialsPage} />
-        <Route path="/ledger" component={GeneralLedgerPage} />
-        <Route path="/parties" component={PartiesPage} />
-        <Route path="/journal-entries/new" component={JournalEntryFormPage} />
-        <Route path="/reports" component={ReportsPage} />
-        <Route path="/settings" component={SettingsPage} />
-        <Route component={NotFound} />
-      </Switch>
-    </Layout>
-  );
-}
-
-function Router() {
-  return (
-    <Switch>
-      <Route path="/" component={LandingPage} />
-      {/* Use a looser match for the rest of the app to allow nested routing to work properly */}
-      <Route path="/:rest*" component={AppRouter} />
-    </Switch>
-  );
-}
-
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
@@ -60,7 +28,30 @@ function App() {
         <PortfolioProvider>
           <Toaster />
           <WouterRouter>
-            <Router />
+            <Switch>
+              <Route path="/" component={LandingPage} />
+              
+              {/* Dashboard & App Routes wrapped in Layout */}
+              <Route path="/:rest*">
+                <Layout>
+                  <Switch>
+                    <Route path="/dashboard" component={Dashboard} />
+                    <Route path="/properties" component={PropertiesPage} />
+                    <Route path="/properties/:id" component={PropertyDetailPage} />
+                    <Route path="/tenants" component={TenantsPage} />
+                    <Route path="/maintenance" component={MaintenancePage} />
+                    <Route path="/maintenance/:id" component={RequestDetailPage} />
+                    <Route path="/financials" component={FinancialsPage} />
+                    <Route path="/ledger" component={GeneralLedgerPage} />
+                    <Route path="/parties" component={PartiesPage} />
+                    <Route path="/journal-entries/new" component={JournalEntryFormPage} />
+                    <Route path="/reports" component={ReportsPage} />
+                    <Route path="/settings" component={SettingsPage} />
+                    <Route component={NotFound} />
+                  </Switch>
+                </Layout>
+              </Route>
+            </Switch>
           </WouterRouter>
         </PortfolioProvider>
       </TooltipProvider>
