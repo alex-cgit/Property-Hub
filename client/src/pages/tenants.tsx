@@ -47,6 +47,8 @@ export default function TenantsPage() {
   const [activeTab, setActiveTab] = useState("all");
   const [propertyFilter, setPropertyFilter] = useState("all");
   const [unitFilter, setUnitFilter] = useState("all");
+  
+  const navigate = useNavigate();
 
   const getTenantLease = (tenantId: string) => leases.find(l => l.tenantId === tenantId);
   const getUnit = (unitId: string) => units.find(u => u.id === unitId);
@@ -168,7 +170,11 @@ export default function TenantsPage() {
             </TableHeader>
             <TableBody>
               {enrichedTenants.map((tenant) => (
-                <TableRow key={tenant.id} className="group hover:bg-muted/20 border-border/30">
+                <TableRow 
+                  key={tenant.id} 
+                  className="group hover:bg-muted/20 border-border/30 cursor-pointer transition-colors"
+                  onClick={() => navigate(`/tenants/${tenant.id}`)}
+                >
                   <TableCell className="py-4">
                     <div className="flex items-center gap-3">
                       <Avatar className="h-9 w-9 border border-border rounded-none">

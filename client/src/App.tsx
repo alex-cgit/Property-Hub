@@ -12,6 +12,7 @@ import PropertiesPage from "@/pages/properties";
 import PropertyDetailPage from "@/pages/property-details";
 import UnitDetailsPage from "@/pages/unit-details";
 import TenantsPage from "@/pages/tenants";
+import TenantDetailsPage from "@/pages/tenant-details";
 import MaintenancePage from "@/pages/maintenance";
 import RequestDetailPage from "@/pages/maintenance-detail";
 import FinancialsPage from "@/pages/financials";
@@ -39,6 +40,7 @@ function App() {
                 <Route path="/properties/:id" element={<PropertyDetailPage />} />
                 <Route path="/properties/:id/units/:unitId" element={<UnitDetailsPage />} />
                 <Route path="/tenants" element={<TenantsPage />} />
+                <Route path="/tenants/:id" element={<TenantDetailsPage />} />
                 <Route path="/maintenance" element={<MaintenancePage />} />
                 <Route path="/maintenance/:id" element={<RequestDetailPage />} />
                 <Route path="/financials" element={<FinancialsPage />} />

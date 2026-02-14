@@ -248,7 +248,11 @@ export default function PropertyDetailPage() {
                     const unit = units.find(u => u.id === lease.unitId);
                     if (!tenant) return null;
                     return (
-                      <TableRow key={lease.id} className="group hover:bg-muted/20 border-border/30">
+                      <TableRow 
+                        key={lease.id} 
+                        className="group hover:bg-muted/20 border-border/30 cursor-pointer transition-colors"
+                        onClick={() => navigate(`/tenants/${tenant.id}`)}
+                      >
                         <TableCell className="py-3 font-medium text-xs">{tenant.name}</TableCell>
                         <TableCell className="py-3 text-xs">{unit?.unitNumber}</TableCell>
                         <TableCell className="py-3 text-xs text-muted-foreground">{lease.startDate} - {lease.endDate}</TableCell>
@@ -292,7 +296,11 @@ export default function PropertyDetailPage() {
                   {propertyRequests.map((req) => {
                      const unit = units.find(u => u.id === req.unitId);
                      return (
-                      <TableRow key={req.id} className="group hover:bg-muted/20 border-border/30">
+                      <TableRow 
+                        key={req.id} 
+                        className="group hover:bg-muted/20 border-border/30 cursor-pointer transition-colors"
+                        onClick={() => navigate(`/maintenance/${req.id}`)}
+                      >
                         <TableCell className="py-3">
                           <div className="flex flex-col">
                             <span className="font-medium text-xs">{req.title}</span>
