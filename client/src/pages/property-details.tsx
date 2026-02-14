@@ -197,7 +197,11 @@ export default function PropertyDetailPage() {
                 </TableHeader>
                 <TableBody>
                   {propertyUnits.map((unit) => (
-                    <TableRow key={unit.id} className="group hover:bg-muted/20 border-border/30">
+                    <TableRow 
+                      key={unit.id} 
+                      className="group hover:bg-muted/20 border-border/30 cursor-pointer transition-colors"
+                      onClick={() => navigate(`/properties/${property.id}/units/${unit.id}`)}
+                    >
                       <TableCell className="py-3 font-medium text-xs">{unit.unitNumber}</TableCell>
                       <TableCell className="py-3">
                         <Badge variant="outline" className={`rounded-none uppercase tracking-widest text-[8px] border-0 
