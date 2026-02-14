@@ -62,12 +62,18 @@ export interface MaintenanceRequest {
   propertyId: string;
   unitId?: string;
   task_type: "Maintenance Request" | "Property Inspection" | "Move-In Preparation" | "Move-Out Inspection" | "Lease Renewal Process" | "Custom Task";
+  category?: string;
   title: string;
   description: string;
   priority: "Low" | "Medium" | "High" | "Critical";
   status: "Open" | "In Progress" | "Completed";
   dateReported: string;
   assignedTo?: string;
+  contactName?: string;
+  contactPhone?: string;
+  comments?: { id: string; text: string; author: string; date: string }[];
+  photos?: { url: string; caption: string }[];
+  timeline?: { date: string; action: string; author: string; details?: string }[];
 }
 
 export interface FinancialRecord {
@@ -145,58 +151,88 @@ export const maintenanceRequests: MaintenanceRequest[] = [
     propertyId: "prop-1", 
     unitId: "u-103", 
     task_type: "Maintenance Request",
+    category: "Plumbing",
     title: "Leaking Faucet", 
     description: "Kitchen sink faucet is dripping constantly.", 
     priority: "Low", 
     status: "Open", 
     dateReported: "2023-10-15", 
-    assignedTo: "Mario" 
+    assignedTo: "Mario",
+    contactName: "John Doe",
+    contactPhone: "(555) 123-4567",
+    comments: [
+      { id: "c-1", text: "Tenant reported issue via phone.", author: "Admin", date: "2023-10-15" }
+    ],
+    timeline: [
+      { date: "2023-10-15", action: "Created", author: "Admin", details: "Initial report" }
+    ]
   },
   { 
     id: "m-2", 
     propertyId: "prop-2", 
     unitId: "u-202", 
     task_type: "Maintenance Request",
+    category: "HVAC",
     title: "HVAC Malfunction", 
     description: "AC unit making loud banging noises.", 
     priority: "High", 
     status: "In Progress", 
     dateReported: "2023-10-14", 
-    assignedTo: "TechCool Services" 
+    assignedTo: "TechCool Services",
+    contactName: "Jane Smith",
+    contactPhone: "(555) 987-6543",
+    comments: [],
+    timeline: [
+      { date: "2023-10-14", action: "Created", author: "System" },
+      { date: "2023-10-15", action: "Assigned", author: "Admin", details: "Assigned to TechCool Services" }
+    ]
   },
   { 
     id: "m-3", 
     propertyId: "prop-1", 
     task_type: "Property Inspection",
+    category: "General",
     title: "Lobby Light Out", 
     description: "Main entrance overhead light is flickering.", 
     priority: "Medium", 
     status: "Completed", 
-    dateReported: "2023-10-10" 
+    dateReported: "2023-10-10",
+    timeline: [
+      { date: "2023-10-10", action: "Created", author: "Security" },
+      { date: "2023-10-12", action: "Completed", author: "Mario", details: "Replaced bulb" }
+    ]
   },
   {
     id: "m-4",
     propertyId: "prop-1",
     unitId: "u-102",
     task_type: "Move-In Preparation",
+    category: "Turnover",
     title: "Unit 102 Prep",
     description: "Clean and paint unit for new tenant arrival.",
     priority: "High",
     status: "Open",
     dateReported: "2023-10-20",
-    assignedTo: "Cleaning Crew A"
+    assignedTo: "Cleaning Crew A",
+    timeline: [
+      { date: "2023-10-20", action: "Created", author: "Leasing Agent" }
+    ]
   },
   {
     id: "m-5",
     propertyId: "prop-2",
     unitId: "u-201",
     task_type: "Lease Renewal Process",
+    category: "Administrative",
     title: "Suite A Renewal",
     description: "Prepare renewal documents for TechStart Inc.",
     priority: "Medium",
     status: "In Progress",
     dateReported: "2023-10-18",
-    assignedTo: "Leasing Office"
+    assignedTo: "Leasing Office",
+    timeline: [
+      { date: "2023-10-18", action: "Created", author: "System" }
+    ]
   }
 ];
 

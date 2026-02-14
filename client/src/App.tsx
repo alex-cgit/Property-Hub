@@ -10,6 +10,7 @@ import Dashboard from "@/pages/dashboard";
 import PropertiesPage from "@/pages/properties";
 import TenantsPage from "@/pages/tenants";
 import MaintenancePage from "@/pages/maintenance";
+import RequestDetailPage from "@/pages/maintenance-detail";
 import FinancialsPage from "@/pages/financials";
 import GeneralLedgerPage from "@/pages/ledger";
 import PartiesPage from "@/pages/parties";
@@ -26,6 +27,7 @@ function Router() {
         <Route path="/properties" component={PropertiesPage} />
         <Route path="/tenants" component={TenantsPage} />
         <Route path="/maintenance" component={MaintenancePage} />
+        <Route path="/maintenance/:id" component={RequestDetailPage} />
         <Route path="/financials" component={FinancialsPage} />
         <Route path="/ledger" component={GeneralLedgerPage} />
         <Route path="/parties" component={PartiesPage} />

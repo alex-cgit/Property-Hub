@@ -309,6 +309,23 @@ function NewRequestModal() {
               </DialogTitle>
             </DialogHeader>
             <div className="grid gap-4 py-4">
+              <div className="space-y-2">
+                <label className="text-[8px] uppercase tracking-widest font-bold">Category</label>
+                <Select>
+                  <SelectTrigger className="rounded-none text-xs">
+                    <SelectValue placeholder="Select Category" />
+                  </SelectTrigger>
+                  <SelectContent className="rounded-none">
+                    <SelectItem value="plumbing">Plumbing</SelectItem>
+                    <SelectItem value="hvac">HVAC</SelectItem>
+                    <SelectItem value="electrical">Electrical</SelectItem>
+                    <SelectItem value="general">General</SelectItem>
+                    <SelectItem value="appliance">Appliance</SelectItem>
+                    <SelectItem value="turnover">Turnover</SelectItem>
+                    <SelectItem value="admin">Administrative</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
                   <label className="text-[8px] uppercase tracking-widest font-bold">Title</label>
@@ -350,6 +367,16 @@ function NewRequestModal() {
                 <div className="space-y-2">
                   <label className="text-[8px] uppercase tracking-widest font-bold">Due Date</label>
                   <Input type="date" className="rounded-none text-xs" />
+                </div>
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <label className="text-[8px] uppercase tracking-widest font-bold">Contact Name</label>
+                  <Input placeholder="Name" className="rounded-none text-xs" />
+                </div>
+                <div className="space-y-2">
+                  <label className="text-[8px] uppercase tracking-widest font-bold">Contact Phone</label>
+                  <Input placeholder="Phone number" className="rounded-none text-xs" />
                 </div>
               </div>
             </div>
