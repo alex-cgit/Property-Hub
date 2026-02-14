@@ -7,6 +7,7 @@ import { PortfolioProvider } from "@/lib/portfolio-context";
 import NotFound from "@/pages/not-found";
 import Layout from "@/components/layout";
 import Dashboard from "@/pages/dashboard";
+import LandingPage from "@/pages/landing";
 import PropertiesPage from "@/pages/properties";
 import TenantsPage from "@/pages/tenants";
 import MaintenancePage from "@/pages/maintenance";
@@ -18,11 +19,11 @@ import JournalEntryFormPage from "@/pages/journal-entry-form";
 import ReportsPage from "@/pages/reports";
 import PortfoliosPage from "@/pages/portfolios";
 
-function Router() {
+function AppRouter() {
   return (
     <Layout>
       <Switch>
-        <Route path="/" component={Dashboard} />
+        <Route path="/dashboard" component={Dashboard} />
         <Route path="/portfolios" component={PortfoliosPage} />
         <Route path="/properties" component={PropertiesPage} />
         <Route path="/tenants" component={TenantsPage} />
@@ -36,6 +37,15 @@ function Router() {
         <Route component={NotFound} />
       </Switch>
     </Layout>
+  );
+}
+
+function Router() {
+  return (
+    <Switch>
+      <Route path="/" component={LandingPage} />
+      <Route path="/:rest*" component={AppRouter} />
+    </Switch>
   );
 }
 

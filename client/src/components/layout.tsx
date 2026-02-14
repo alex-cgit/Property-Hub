@@ -53,7 +53,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   const selectedPortfolio = portfolios.find(p => p.id === selectedPortfolioId);
 
   const navItems = [
-    { title: "Dashboard", icon: LayoutDashboard, url: "/" },
+    { title: "Dashboard", icon: LayoutDashboard, url: "/dashboard" },
     { title: "Portfolios", icon: Briefcase, url: "/portfolios" },
     { title: "Properties", icon: Building2, url: "/properties" },
     { title: "Tenants & Leases", icon: Users, url: "/tenants" },
@@ -72,9 +72,13 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         <main className="flex-1 flex flex-col min-w-0 transition-all duration-300 ease-in-out">
           <header className="sticky top-0 z-10 flex h-16 shrink-0 items-center gap-4 border-b bg-background/80 px-6 backdrop-blur-md">
             <SidebarTrigger className="-ml-1" />
-            <Separator orientation="vertical" className="h-6" />
+            <Link href="/" className="md:hidden flex items-center gap-2">
+              <Building2 className="h-5 w-5 text-primary" />
+              <span className="font-heading font-bold uppercase tracking-widest text-sm">PROP</span>
+            </Link>
+            <Separator orientation="vertical" className="h-6 hidden md:block" />
             
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 hidden md:flex">
                <Briefcase className="h-4 w-4 text-primary" />
                <span className="text-sm font-bold uppercase tracking-wider text-muted-foreground hidden md:inline-block">Portfolio:</span>
                <span className="text-sm font-bold uppercase tracking-tight">{selectedPortfolio?.name || "Select Portfolio"}</span>
