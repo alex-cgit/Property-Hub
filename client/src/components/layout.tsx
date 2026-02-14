@@ -183,6 +183,8 @@ function AppSidebar({ location, navItems }: { location: string, navItems: any[] 
 }
 
 function UserNav() {
+  const [, setLocation] = useLocation();
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -213,7 +215,7 @@ function UserNav() {
           Settings
         </DropdownMenuItem>
         <DropdownMenuSeparator />
-        <DropdownMenuItem className="text-destructive focus:text-destructive">
+        <DropdownMenuItem className="text-destructive focus:text-destructive cursor-pointer" onClick={() => setLocation("/")}>
           <LogOut className="mr-2 h-4 w-4" />
           Log out
         </DropdownMenuItem>
