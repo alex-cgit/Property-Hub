@@ -173,9 +173,28 @@ export default function RequestDetailPage() {
             <CardContent className="p-6 grid gap-6">
               {isEditing ? (
                  <div className="space-y-4">
-                   <div className="space-y-2">
-                     <label className="text-[10px] uppercase tracking-widest font-bold text-muted-foreground">Title</label>
-                     <Input defaultValue={request.title} className="rounded-none" />
+                   <div className="grid grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                      <label className="text-[10px] uppercase tracking-widest font-bold text-muted-foreground">Title</label>
+                      <Input defaultValue={request.title} className="rounded-none" />
+                    </div>
+                    <div className="space-y-2">
+                      <label className="text-[10px] uppercase tracking-widest font-bold text-muted-foreground">Category</label>
+                      <Select defaultValue={request.category ? request.category.toLowerCase() : ""}>
+                        <SelectTrigger className="rounded-none">
+                          <SelectValue placeholder="Category" />
+                        </SelectTrigger>
+                        <SelectContent className="rounded-none">
+                          <SelectItem value="plumbing">Plumbing</SelectItem>
+                          <SelectItem value="hvac">HVAC</SelectItem>
+                          <SelectItem value="electrical">Electrical</SelectItem>
+                          <SelectItem value="general">General</SelectItem>
+                          <SelectItem value="appliance">Appliance</SelectItem>
+                          <SelectItem value="turnover">Turnover</SelectItem>
+                          <SelectItem value="admin">Administrative</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
                    </div>
                    <div className="space-y-2">
                      <label className="text-[10px] uppercase tracking-widest font-bold text-muted-foreground">Description</label>

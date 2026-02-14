@@ -41,7 +41,7 @@ import {
   DialogTrigger,
   DialogFooter
 } from "@/components/ui/dialog";
-import { maintenanceRequests, properties, units } from "@/lib/mock-data";
+import { maintenanceRequests, properties, units, leases, tenants } from "@/lib/mock-data";
 import { usePortfolio } from "@/lib/portfolio-context";
 
 export default function MaintenancePage() {
@@ -264,6 +264,32 @@ export default function MaintenancePage() {
 function NewRequestModal() {
   const [step, setStep] = useState(1);
   const [taskType, setTaskType] = useState<string | null>(null);
+  
+  // Form State
+  const [propertyId, setPropertyId] = useState<string>("");
+  const [unitId, setUnitId] = useState<string>("");
+  const [dateReported, setDateReported] = useState<string>(new Date().toISOString().split('T')[0]);
+  const [contactName, setContactName] = useState<string>("");
+  const [contactPhone, setContactPhone] = useState<string>("");
+
+  const filteredUnits = units.filter(u => u.propertyId === propertyId);
+
+  // Auto-fill tenant info when unit is selected
+  const handleUnitChange = (uId: string) => {
+    setUnitId(uId);
+    // Find active lease for this unit
+    const lease = leases.find(l => l.unitId === uId && l.status === "Active");
+    if (lease) {
+      const tenant = tenants.find(t => t.id === lease.tenantId);
+      if (tenant) {
+        setContactName(tenant.name);
+        setContactPhone(tenant.phone);
+      }
+    } else {
+      setContactName("");
+      setContactPhone("");
+    }
+  };
 
   const TaskTypeButton = ({ type, icon: Icon, color }: any) => (
     <Button 
@@ -280,7 +306,15 @@ function NewRequestModal() {
   );
 
   return (
-    <Dialog onOpenChange={(open) => { if(!open) setStep(1); }}>
+    <Dialog onOpenChange={(open) => { 
+      if(!open) {
+        setStep(1);
+        setPropertyId("");
+        setUnitId("");
+        setContactName("");
+        setContactPhone("");
+      } 
+    }}>
       <DialogTrigger asChild>
         <Button className="bg-primary text-primary-foreground rounded-none px-6 uppercase tracking-widest text-[10px] font-bold shadow-md">
           <Plus className="mr-2 h-3 w-3" /> New Request
@@ -350,10 +384,13 @@ function NewRequestModal() {
                 <label className="text-[8px] uppercase tracking-widest font-bold">Description</label>
                 <Input placeholder="Detailed description..." className="rounded-none text-xs" />
               </div>
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-3 gap-4">
                 <div className="space-y-2">
                   <label className="text-[8px] uppercase tracking-widest font-bold">Property</label>
-                  <Select>
+                  <Select value={propertyId} onValueChange={(val) => {
+                    setPropertyId(val);
+                    setUnitId(""); // Reset unit when property changes
+                  }}>
                     <SelectTrigger className="rounded-none text-xs">
                       <SelectValue placeholder="Select Property" />
                     </SelectTrigger>
@@ -365,18 +402,46 @@ function NewRequestModal() {
                   </Select>
                 </div>
                 <div className="space-y-2">
-                  <label className="text-[8px] uppercase tracking-widest font-bold">Due Date</label>
-                  <Input type="date" className="rounded-none text-xs" />
+                  <label className="text-[8px] uppercase tracking-widest font-bold">Unit</label>
+                  <Select value={unitId} onValueChange={handleUnitChange} disabled={!propertyId}>
+                    <SelectTrigger className="rounded-none text-xs">
+                      <SelectValue placeholder={!propertyId ? "Select Property First" : "Select Unit"} />
+                    </SelectTrigger>
+                    <SelectContent className="rounded-none">
+                      {filteredUnits.map(u => (
+                        <SelectItem key={u.id} value={u.id}>Unit {u.unitNumber}</SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div className="space-y-2">
+                  <label className="text-[8px] uppercase tracking-widest font-bold">Date Reported</label>
+                  <Input 
+                    type="date" 
+                    className="rounded-none text-xs" 
+                    value={dateReported}
+                    onChange={(e) => setDateReported(e.target.value)}
+                  />
                 </div>
               </div>
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
                   <label className="text-[8px] uppercase tracking-widest font-bold">Contact Name</label>
-                  <Input placeholder="Name" className="rounded-none text-xs" />
+                  <Input 
+                    placeholder="Name" 
+                    className="rounded-none text-xs" 
+                    value={contactName}
+                    onChange={(e) => setContactName(e.target.value)}
+                  />
                 </div>
                 <div className="space-y-2">
                   <label className="text-[8px] uppercase tracking-widest font-bold">Contact Phone</label>
-                  <Input placeholder="Phone number" className="rounded-none text-xs" />
+                  <Input 
+                    placeholder="Phone number" 
+                    className="rounded-none text-xs" 
+                    value={contactPhone}
+                    onChange={(e) => setContactPhone(e.target.value)}
+                  />
                 </div>
               </div>
             </div>
