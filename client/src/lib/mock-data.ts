@@ -61,6 +61,7 @@ export interface MaintenanceRequest {
   id: string;
   propertyId: string;
   unitId?: string;
+  task_type: "Maintenance Request" | "Property Inspection" | "Move-In Preparation" | "Move-Out Inspection" | "Lease Renewal Process" | "Custom Task";
   title: string;
   description: string;
   priority: "Low" | "Medium" | "High" | "Critical";
@@ -139,9 +140,64 @@ export const leases: Lease[] = [
 ];
 
 export const maintenanceRequests: MaintenanceRequest[] = [
-  { id: "m-1", propertyId: "prop-1", unitId: "u-103", title: "Leaking Faucet", description: "Kitchen sink faucet is dripping constantly.", priority: "Low", status: "Open", dateReported: "2023-10-15", assignedTo: "Mario" },
-  { id: "m-2", propertyId: "prop-2", unitId: "u-202", title: "HVAC Malfunction", description: "AC unit making loud banging noises.", priority: "High", status: "In Progress", dateReported: "2023-10-14", assignedTo: "TechCool Services" },
-  { id: "m-3", propertyId: "prop-1", title: "Lobby Light Out", description: "Main entrance overhead light is flickering.", priority: "Medium", status: "Completed", dateReported: "2023-10-10" },
+  { 
+    id: "m-1", 
+    propertyId: "prop-1", 
+    unitId: "u-103", 
+    task_type: "Maintenance Request",
+    title: "Leaking Faucet", 
+    description: "Kitchen sink faucet is dripping constantly.", 
+    priority: "Low", 
+    status: "Open", 
+    dateReported: "2023-10-15", 
+    assignedTo: "Mario" 
+  },
+  { 
+    id: "m-2", 
+    propertyId: "prop-2", 
+    unitId: "u-202", 
+    task_type: "Maintenance Request",
+    title: "HVAC Malfunction", 
+    description: "AC unit making loud banging noises.", 
+    priority: "High", 
+    status: "In Progress", 
+    dateReported: "2023-10-14", 
+    assignedTo: "TechCool Services" 
+  },
+  { 
+    id: "m-3", 
+    propertyId: "prop-1", 
+    task_type: "Property Inspection",
+    title: "Lobby Light Out", 
+    description: "Main entrance overhead light is flickering.", 
+    priority: "Medium", 
+    status: "Completed", 
+    dateReported: "2023-10-10" 
+  },
+  {
+    id: "m-4",
+    propertyId: "prop-1",
+    unitId: "u-102",
+    task_type: "Move-In Preparation",
+    title: "Unit 102 Prep",
+    description: "Clean and paint unit for new tenant arrival.",
+    priority: "High",
+    status: "Open",
+    dateReported: "2023-10-20",
+    assignedTo: "Cleaning Crew A"
+  },
+  {
+    id: "m-5",
+    propertyId: "prop-2",
+    unitId: "u-201",
+    task_type: "Lease Renewal Process",
+    title: "Suite A Renewal",
+    description: "Prepare renewal documents for TechStart Inc.",
+    priority: "Medium",
+    status: "In Progress",
+    dateReported: "2023-10-18",
+    assignedTo: "Leasing Office"
+  }
 ];
 
 export interface Account {
