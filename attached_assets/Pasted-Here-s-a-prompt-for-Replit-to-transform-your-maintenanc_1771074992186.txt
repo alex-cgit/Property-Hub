@@ -1,0 +1,55 @@
+Here's a prompt for Replit to transform your maintenance screen into a more flexible requests & tasks system:
+
+---
+
+**Transform the Maintenance screen into a Requests & Tasks system with the following changes:**
+
+**Page Header & Navigation:**
+- Change page title from "MAINTENANCE" to "REQUESTS & TASKS"
+- Update subtitle from "Track and manage property maintenance requests" to "Track and manage property requests and tasks"
+- Keep the "NEW REQUEST" button but make it open a modal to select task type first
+
+**Task Type System:**
+- Add `task_type` field to each request/task with options:
+  - Maintenance Request
+  - Property Inspection
+  - Move-In Preparation
+  - Move-Out Inspection
+  - Lease Renewal Process
+  - Custom Task
+- Display task type as a badge next to the title (similar to priority badges)
+- Use different colors for different task types (maintenance=blue, inspection=purple, move-in/out=green, custom=gray)
+
+**List View Enhancements:**
+- Add task type badge before the title
+- Keep existing priority badges (LOW, MEDIUM, HIGH)
+- Add status icon (current circle icons are good)
+- Show: [Status Icon] [Task Type Badge] TITLE [Priority Badge]
+- Keep location/unit info, reported date, and assigned info
+
+**Filter Updates:**
+- Add "ALL TASK TYPES" dropdown next to "ALL BUILDINGS" filter
+- Allow filtering by: All, Maintenance, Inspections, Move-In/Out, Custom
+- Keep existing status filters (ALL REQUESTS, OPEN, IN PROGRESS, COMPLETED)
+
+**Detail Screen (when clicking a request):**
+Display comprehensive info including:
+- Task type and title at top
+- Priority level
+- Current status with status change history
+- Property/Building and Unit information
+- Description/Details
+- Reported by (name, date/time)
+- Assigned to (person/vendor)
+- Due date
+- Attachments/Photos section
+- Activity timeline (status changes, comments, updates)
+- Action buttons: Change Status, Reassign, Add Comment, Upload Photo, Edit
+
+**Create New Request Modal:**
+- First step: Select task type
+- Second step: Form with fields based on task type
+- Common fields: Title, Description, Priority, Property/Unit, Due Date, Assign To
+- Task-specific fields as needed
+
+Keep the existing visual design language (dark header, clean card layout, icons) but make it work for any type of request/task workflow, not just maintenance.
