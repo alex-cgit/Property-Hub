@@ -32,13 +32,17 @@ export default function PropertyDetailPage() {
   const { filteredProperties } = usePortfolio();
   const [activeTab, setActiveTab] = useState("units");
 
-  const propertyId = params?.id;
+  // Debugging log
+  // console.log("PropertyDetailPage params:", params);
+
+  const propertyId = params && params.id;
   const property = filteredProperties.find(p => p.id === propertyId);
 
-  if (!property) {
+  if (!match || !property) {
     return (
-      <div className="flex flex-col items-center justify-center h-full space-y-4">
+      <div className="flex flex-col items-center justify-center h-full space-y-4 p-8">
         <h2 className="text-xl font-heading font-bold uppercase tracking-widest">Property Not Found</h2>
+        <p className="text-muted-foreground">The property you requested could not be found.</p>
         <Button onClick={() => setLocation("/properties")}>Return to Properties</Button>
       </div>
     );
