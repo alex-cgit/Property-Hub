@@ -1,4 +1,4 @@
-import { Link, useLocation } from "wouter";
+import { Link, useNavigate } from "react-router-dom";
 import { 
   Building2, 
   CheckCircle2, 
@@ -15,18 +15,18 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter }
 import { Badge } from "@/components/ui/badge";
 
 export default function LandingPage() {
-  const [, setLocation] = useLocation();
+  const navigate = useNavigate();
 
   const handleGetStarted = () => {
     // In a real app, this would go to signup
     // For prototype, we'll go to dashboard
-    setLocation("/dashboard");
+    navigate("/dashboard");
   };
 
   const handleLogin = () => {
     // In a real app, this would go to login
     // For prototype, we'll go to dashboard
-    setLocation("/dashboard");
+    navigate("/dashboard");
   };
 
   return (

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useLocation } from "wouter";
+import { useNavigate } from "react-router-dom";
 import { 
   Plus, 
   Search, 
@@ -170,13 +170,13 @@ function AccountsGrid() {
 }
 
 function NewJournalEntryDialog() {
-  const [, setLocation] = useLocation();
+  const navigate = useNavigate();
   
   return (
     <Button 
       variant="outline" 
       className="rounded-none border-border/50 uppercase tracking-widest text-[10px] font-bold"
-      onClick={() => setLocation("/journal-entries/new")}
+      onClick={() => navigate("/journal-entries/new")}
     >
       <Plus className="mr-2 h-3 w-3" /> New Entry
     </Button>

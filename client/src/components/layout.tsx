@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link, useLocation } from "wouter";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { 
   Settings,
   LayoutDashboard, 
@@ -48,7 +48,7 @@ import { usePortfolio } from "@/lib/portfolio-context";
 import { portfolios } from "@/lib/mock-data";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
-  const [location] = useLocation();
+  const location = useLocation().pathname;
   const { selectedPortfolioId } = usePortfolio();
   const selectedPortfolio = portfolios.find(p => p.id === selectedPortfolioId);
 
@@ -72,7 +72,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         <main className="flex-1 flex flex-col min-w-0 transition-all duration-300 ease-in-out">
           <header className="sticky top-0 z-10 flex h-16 shrink-0 items-center gap-4 border-b bg-background/80 px-6 backdrop-blur-md">
             <SidebarTrigger className="-ml-1" />
-            <Link href="/" className="md:hidden flex items-center gap-2">
+            <Link to="/" className="md:hidden flex items-center gap-2">
               <Building2 className="h-5 w-5 text-primary" />
               <span className="font-heading font-bold uppercase tracking-widest text-sm">PROP</span>
             </Link>
@@ -136,7 +136,7 @@ function AppSidebar({ location, navItems }: { location: string, navItems: any[] 
                     tooltip={item.title}
                     className="gap-4 px-3 py-3 h-auto rounded-none text-sidebar-foreground/60 hover:bg-sidebar-accent hover:text-sidebar-accent-foreground data-[active=true]:bg-transparent data-[active=true]:text-sidebar-primary data-[active=true]:font-bold border-l-2 border-transparent data-[active=true]:border-primary transition-all duration-200 overflow-hidden"
                   >
-                    <Link href={item.url}>
+                    <Link to={item.url}>
                       <item.icon className="h-4 w-4 shrink-0 stroke-[1.5]" />
                       <span className="text-xs uppercase tracking-wider group-data-[collapsible=icon]:hidden whitespace-nowrap">{item.title}</span>
                     </Link>
@@ -153,7 +153,7 @@ function AppSidebar({ location, navItems }: { location: string, navItems: any[] 
 }
 
 function UserNav() {
-  const [, setLocation] = useLocation();
+  const navigate = useNavigate();
 
   return (
     <DropdownMenu>
@@ -185,7 +185,7 @@ function UserNav() {
           Settings
         </DropdownMenuItem>
         <DropdownMenuSeparator />
-        <DropdownMenuItem className="text-destructive focus:text-destructive cursor-pointer" onClick={() => setLocation("/")}>
+        <DropdownMenuItem className="text-destructive focus:text-destructive cursor-pointer" onClick={() => navigate("/")}>
           <LogOut className="mr-2 h-4 w-4" />
           Log out
         </DropdownMenuItem>

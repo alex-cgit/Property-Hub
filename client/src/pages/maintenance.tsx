@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link, useLocation } from "wouter";
+import { Link, useNavigate } from "react-router-dom";
 import { 
   Wrench, 
   AlertCircle, 
@@ -50,7 +50,7 @@ export default function MaintenancePage() {
   const [unitFilter, setUnitFilter] = useState("all");
   const [taskTypeFilter, setTaskTypeFilter] = useState("all");
   const { filteredProperties: properties } = usePortfolio();
-  const [, setLocation] = useLocation();
+  const navigate = useNavigate();
 
   const getProperty = (id: string) => properties.find(p => p.id === id);
   const getUnit = (id?: string) => id ? units.find(u => u.id === id) : null;
@@ -200,7 +200,7 @@ export default function MaintenancePage() {
             <Card 
               key={request.id} 
               className="rounded-none hover:border-primary transition-all duration-300 border-border/50 cursor-pointer group"
-              onClick={() => setLocation(`/maintenance/${request.id}`)}
+              onClick={() => navigate(`/maintenance/${request.id}`)}
             >
               <CardContent className="p-6">
                 <div className="flex flex-col md:flex-row md:items-center gap-4 justify-between">

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useLocation, useRoute } from "wouter";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { 
   Building2, 
   MapPin, 
@@ -27,8 +27,8 @@ import { usePortfolio } from "@/lib/portfolio-context";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 
 export default function PropertyDetailPage() {
-  const [, params] = useRoute("/properties/:id");
-  const [, setLocation] = useLocation();
+  const params = useParams();
+  const navigate = useNavigate();
   const { filteredProperties } = usePortfolio();
   const [activeTab, setActiveTab] = useState("units");
 
@@ -54,7 +54,7 @@ export default function PropertyDetailPage() {
       <div className="flex flex-col items-center justify-center h-full space-y-4 p-8">
         <h2 className="text-xl font-heading font-bold uppercase tracking-widest">Property Not Found</h2>
         <p className="text-muted-foreground">The property you requested could not be found.</p>
-        <Button onClick={() => setLocation("/properties")}>Return to Properties</Button>
+        <Button onClick={() => navigate("/properties")}>Return to Properties</Button>
       </div>
     );
   }
@@ -77,7 +77,7 @@ export default function PropertyDetailPage() {
         <Button 
           variant="ghost" 
           className="pl-0 hover:bg-transparent hover:text-primary gap-2"
-          onClick={() => setLocation("/properties")}
+          onClick={() => navigate("/properties")}
         >
           <ArrowLeft className="h-4 w-4" /> Back to Properties
         </Button>

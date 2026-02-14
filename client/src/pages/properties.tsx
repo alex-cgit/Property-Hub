@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link, useLocation } from "wouter";
+import { Link, useNavigate } from "react-router-dom";
 import { 
   Building2, 
   MapPin, 
@@ -31,7 +31,7 @@ export default function PropertiesPage() {
   const [searchTerm, setSearchTerm] = useState("");
   const [activeTab, setActiveTab] = useState("all");
   const { filteredProperties: properties } = usePortfolio();
-  const [, setLocation] = useLocation();
+  const navigate = useNavigate();
 
   const filteredProperties = properties.filter(p => {
     const matchesSearch = p.name.toLowerCase().includes(searchTerm.toLowerCase()) || 
@@ -84,7 +84,7 @@ export default function PropertiesPage() {
           <PropertyCard 
             key={property.id} 
             property={property} 
-            onSelect={() => setLocation(`/properties/${property.id}`)} 
+            onSelect={() => navigate(`/properties/${property.id}`)} 
           />
         ))}
       </div>

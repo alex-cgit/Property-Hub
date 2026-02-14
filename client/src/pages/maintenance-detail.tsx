@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link, useLocation, useRoute } from "wouter";
+import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import { 
   ArrowLeft, 
   Calendar, 
@@ -42,8 +42,8 @@ import {
 import { maintenanceRequests, properties, units, tenants, leases } from "@/lib/mock-data";
 
 export default function RequestDetailPage() {
-  const [, params] = useRoute("/maintenance/:id");
-  const [, setLocation] = useLocation();
+  const params = useParams();
+  const navigate = useNavigate();
   const requestId = params?.id;
   
   // Find the request
@@ -62,7 +62,7 @@ export default function RequestDetailPage() {
     return (
       <div className="flex flex-col items-center justify-center h-[50vh]">
         <h2 className="text-xl font-bold">Request not found</h2>
-        <Button variant="link" onClick={() => setLocation("/maintenance")}>Return to Maintenance</Button>
+        <Button variant="link" onClick={() => navigate("/maintenance")}>Return to Maintenance</Button>
       </div>
     );
   }
@@ -97,7 +97,7 @@ export default function RequestDetailPage() {
         <Button 
           variant="ghost" 
           className="w-fit p-0 h-auto text-muted-foreground hover:text-foreground text-xs uppercase tracking-widest"
-          onClick={() => setLocation("/maintenance")}
+          onClick={() => navigate("/maintenance")}
         >
           <ArrowLeft className="mr-2 h-3 w-3" /> Back to List
         </Button>

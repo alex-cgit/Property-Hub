@@ -1,4 +1,4 @@
-import { Switch, Route, Router as WouterRouter } from "wouter";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { queryClient } from "./lib/queryClient";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
@@ -27,36 +27,37 @@ function App() {
       <TooltipProvider>
         <PortfolioProvider>
           <Toaster />
-          <WouterRouter>
-            <Switch>
-              <Route path="/" component={LandingPage} />
+          <BrowserRouter>
+            <Routes>
+              <Route path="/" element={<LandingPage />} />
               
               {/* Dashboard & App Routes wrapped in Layout */}
-              <Route path="/:rest*">
-                <Layout>
-                  <Switch>
-                    <Route path="/dashboard" component={Dashboard} />
-                    <Route path="/properties" component={PropertiesPage} />
-                    <Route path="/properties/:id" component={PropertyDetailPage} />
-                    <Route path="/tenants" component={TenantsPage} />
-                    <Route path="/maintenance" component={MaintenancePage} />
-                    <Route path="/maintenance/:id" component={RequestDetailPage} />
-                    <Route path="/financials" component={FinancialsPage} />
-                    <Route path="/ledger" component={GeneralLedgerPage} />
-                    <Route path="/parties" component={PartiesPage} />
-                    <Route path="/journal-entries/new" component={JournalEntryFormPage} />
-                    <Route path="/reports" component={ReportsPage} />
-                    <Route path="/settings" component={SettingsPage} />
-                    <Route component={NotFound} />
-                  </Switch>
-                </Layout>
+              <Route element={<Layout><OutletLayout /></Layout>}>
+                <Route path="/dashboard" element={<Dashboard />} />
+                <Route path="/properties" element={<PropertiesPage />} />
+                <Route path="/properties/:id" element={<PropertyDetailPage />} />
+                <Route path="/tenants" element={<TenantsPage />} />
+                <Route path="/maintenance" element={<MaintenancePage />} />
+                <Route path="/maintenance/:id" element={<RequestDetailPage />} />
+                <Route path="/financials" element={<FinancialsPage />} />
+                <Route path="/ledger" element={<GeneralLedgerPage />} />
+                <Route path="/parties" element={<PartiesPage />} />
+                <Route path="/journal-entries/new" element={<JournalEntryFormPage />} />
+                <Route path="/reports" element={<ReportsPage />} />
+                <Route path="/settings" element={<SettingsPage />} />
               </Route>
-            </Switch>
-          </WouterRouter>
+              
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </BrowserRouter>
         </PortfolioProvider>
       </TooltipProvider>
     </QueryClientProvider>
   );
 }
+
+// Helper component to render outlet
+import { Outlet } from "react-router-dom";
+const OutletLayout = () => <Outlet />;
 
 export default App;

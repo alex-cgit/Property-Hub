@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link, useLocation } from "wouter";
+import { Link, useNavigate } from "react-router-dom";
 import { 
   ArrowLeft, 
   Save, 
@@ -24,7 +24,7 @@ import {
 import { chartOfAccounts, parties } from "@/lib/mock-data";
 
 export default function JournalEntryFormPage() {
-  const [location, setLocation] = useLocation();
+  const navigate = useNavigate();
   const [lines, setLines] = useState([
     { id: 1, accountId: "", partyId: "", description: "", debit: 0, credit: 0 },
     { id: 2, accountId: "", partyId: "", description: "", debit: 0, credit: 0 },
@@ -49,7 +49,7 @@ export default function JournalEntryFormPage() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-border/50 pb-6">
         <div className="flex items-center gap-4">
-          <Button variant="ghost" size="icon" onClick={() => setLocation("/ledger")} className="rounded-none">
+          <Button variant="ghost" size="icon" onClick={() => navigate("/ledger")} className="rounded-none">
             <ArrowLeft className="h-4 w-4" />
           </Button>
           <div>
@@ -63,7 +63,7 @@ export default function JournalEntryFormPage() {
           </div>
         </div>
         <div className="flex gap-2">
-          <Button variant="outline" className="rounded-none uppercase tracking-widest text-[10px] font-bold" onClick={() => setLocation("/ledger")}>
+          <Button variant="outline" className="rounded-none uppercase tracking-widest text-[10px] font-bold" onClick={() => navigate("/ledger")}>
             Cancel
           </Button>
           <Button variant="outline" className="rounded-none uppercase tracking-widest text-[10px] font-bold">
@@ -72,7 +72,7 @@ export default function JournalEntryFormPage() {
           <Button 
             className="bg-primary text-primary-foreground rounded-none uppercase tracking-widest text-[10px] font-bold px-6"
             disabled={!isBalanced || totalDebits === 0}
-            onClick={() => setLocation("/ledger")}
+            onClick={() => navigate("/ledger")}
           >
             Post Entry
           </Button>
