@@ -19,6 +19,8 @@ import JournalEntryFormPage from "@/pages/journal-entry-form";
 import ReportsPage from "@/pages/reports";
 import PortfoliosPage from "@/pages/portfolios";
 
+import SettingsPage from "@/pages/settings";
+
 function AppRouter() {
   return (
     <Layout>
@@ -34,6 +36,7 @@ function AppRouter() {
         <Route path="/parties" component={PartiesPage} />
         <Route path="/journal-entries/new" component={JournalEntryFormPage} />
         <Route path="/reports" component={ReportsPage} />
+        <Route path="/settings" component={SettingsPage} />
         <Route component={NotFound} />
       </Switch>
     </Layout>

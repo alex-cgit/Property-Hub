@@ -1,12 +1,12 @@
 import { useState } from "react";
 import { Link, useLocation } from "wouter";
 import { 
+  Settings,
   LayoutDashboard, 
   Building2, 
   Users, 
   Wrench, 
   DollarSign, 
-  Settings,
   Bell,
   Search,
   Menu,
@@ -62,6 +62,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
     { title: "Financials", icon: DollarSign, url: "/financials" },
     { title: "General Ledger", icon: FileText, url: "/ledger" },
     { title: "Reports", icon: ClipboardList, url: "/reports" },
+    { title: "Configuration", icon: Settings, url: "/settings" },
   ];
 
   return (
