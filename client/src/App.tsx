@@ -47,6 +47,7 @@ function Router() {
   return (
     <Switch>
       <Route path="/" component={LandingPage} />
+      {/* Use a looser match for the rest of the app to allow nested routing to work properly */}
       <Route path="/:rest*" component={AppRouter} />
     </Switch>
   );
