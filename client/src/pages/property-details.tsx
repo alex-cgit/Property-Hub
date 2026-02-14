@@ -27,18 +27,17 @@ import { usePortfolio } from "@/lib/portfolio-context";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 
 export default function PropertyDetailPage() {
-  const [match, params] = useRoute("/properties/:id");
+  const [, params] = useRoute("/properties/:id");
   const [, setLocation] = useLocation();
   const { filteredProperties } = usePortfolio();
   const [activeTab, setActiveTab] = useState("units");
 
-  // Debugging log
-  // console.log("PropertyDetailPage params:", params);
-
-  const propertyId = params && params.id;
+  // Fallback to extraction from window location if useRoute fails in nested context
+  const propertyId = params?.id || window.location.pathname.split("/").pop();
+  
   const property = filteredProperties.find(p => p.id === propertyId);
 
-  if (!match || !property) {
+  if (!property) {
     return (
       <div className="flex flex-col items-center justify-center h-full space-y-4 p-8">
         <h2 className="text-xl font-heading font-bold uppercase tracking-widest">Property Not Found</h2>
