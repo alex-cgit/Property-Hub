@@ -15,6 +15,8 @@ import {
   FileText,
   Briefcase,
   ClipboardList,
+  ChevronsUpDown,
+  Check,
   Plus
 } from "lucide-react";
 import { 
@@ -115,12 +117,45 @@ function AppSidebar({ location, navItems }: { location: string, navItems: any[] 
       collapsible="icon" 
       className="border-r border-border bg-sidebar text-sidebar-foreground transition-all duration-300 ease-in-out group-data-[collapsible=icon]:w-[60px]"
     >
-      <SidebarHeader className="h-20 flex items-center justify-center border-b border-sidebar-border/30 overflow-hidden px-2">
+      <SidebarHeader className="flex flex-col gap-4 border-b border-sidebar-border/30 px-2 py-4">
         <div className="flex items-center gap-3 px-2 font-heading font-semibold text-lg tracking-tight w-full justify-start group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:px-0">
           <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-none bg-primary text-primary-foreground">
             <Building2 className="size-6 stroke-[1.5]" />
           </div>
-          <span className="group-data-[collapsible=icon]:hidden uppercase tracking-widest whitespace-nowrap">PROP</span>
+          <span className="group-data-[collapsible=icon]:hidden uppercase tracking-widest whitespace-nowrap text-sm">PROPMASTER</span>
+        </div>
+
+        <div className="group-data-[collapsible=icon]:hidden px-2">
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button 
+                variant="outline" 
+                className="w-full justify-between rounded-none border-border/50 text-[10px] uppercase tracking-widest font-bold h-9 px-3"
+              >
+                <span className="truncate">{selectedPortfolio?.name || "Select Portfolio"}</span>
+                <ChevronsUpDown className="ml-2 h-3 w-3 shrink-0 opacity-50" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent className="w-[--radix-dropdown-menu-trigger-width] rounded-none border-border">
+              <DropdownMenuLabel className="text-[10px] uppercase tracking-widest text-muted-foreground">Switch Portfolio</DropdownMenuLabel>
+              {portfolios.map((portfolio) => (
+                <DropdownMenuItem
+                  key={portfolio.id}
+                  onSelect={() => setSelectedPortfolioId(portfolio.id)}
+                  className="text-[10px] uppercase tracking-widest font-bold cursor-pointer justify-between"
+                >
+                  {portfolio.name}
+                  {selectedPortfolioId === portfolio.id && (
+                    <Check className="ml-auto h-3 w-3" />
+                  )}
+                </DropdownMenuItem>
+              ))}
+              <DropdownMenuSeparator />
+              <DropdownMenuItem className="text-[10px] uppercase tracking-widest cursor-pointer">
+                <Plus className="mr-2 h-3 w-3" /> Add Portfolio
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
         </div>
       </SidebarHeader>
       
