@@ -35,6 +35,8 @@ import {
 import { usePortfolio } from "@/lib/portfolio-context";
 import { portfolios } from "@/lib/mock-data";
 
+import { DocumentationViewer } from "@/components/documentation-viewer";
+
 export default function SettingsPage() {
   const [activeTab, setActiveTab] = useState("general");
   const { selectedPortfolioId } = usePortfolio();
@@ -382,41 +384,7 @@ export default function SettingsPage() {
         </TabsContent>
 
         <TabsContent value="docs" className="space-y-6 animate-in fade-in slide-in-from-bottom-2 duration-500">
-           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-             <Card className="rounded-none border-border/50 shadow-sm hover:border-primary/50 transition-colors cursor-pointer group">
-               <CardContent className="p-6 flex flex-col items-center text-center gap-4 pt-8">
-                 <div className="h-12 w-12 bg-primary/10 flex items-center justify-center rounded-none group-hover:scale-110 transition-transform">
-                   <BookOpen className="h-6 w-6 text-primary" />
-                 </div>
-                 <div className="space-y-2">
-                   <h3 className="text-sm font-bold uppercase tracking-widest">User Guide</h3>
-                   <p className="text-xs text-muted-foreground">Complete manual for property managers and admins.</p>
-                 </div>
-               </CardContent>
-             </Card>
-             <Card className="rounded-none border-border/50 shadow-sm hover:border-primary/50 transition-colors cursor-pointer group">
-               <CardContent className="p-6 flex flex-col items-center text-center gap-4 pt-8">
-                 <div className="h-12 w-12 bg-blue-500/10 flex items-center justify-center rounded-none group-hover:scale-110 transition-transform">
-                   <FileText className="h-6 w-6 text-blue-500" />
-                 </div>
-                 <div className="space-y-2">
-                   <h3 className="text-sm font-bold uppercase tracking-widest">API Documentation</h3>
-                   <p className="text-xs text-muted-foreground">Technical documentation for developers and integrations.</p>
-                 </div>
-               </CardContent>
-             </Card>
-             <Card className="rounded-none border-border/50 shadow-sm hover:border-primary/50 transition-colors cursor-pointer group">
-               <CardContent className="p-6 flex flex-col items-center text-center gap-4 pt-8">
-                 <div className="h-12 w-12 bg-emerald-500/10 flex items-center justify-center rounded-none group-hover:scale-110 transition-transform">
-                   <CheckSquare className="h-6 w-6 text-emerald-500" />
-                 </div>
-                 <div className="space-y-2">
-                   <h3 className="text-sm font-bold uppercase tracking-widest">Best Practices</h3>
-                   <p className="text-xs text-muted-foreground">Guides on property management workflows and efficiency.</p>
-                 </div>
-               </CardContent>
-             </Card>
-           </div>
+           <DocumentationViewer />
         </TabsContent>
       </Tabs>
     </div>
