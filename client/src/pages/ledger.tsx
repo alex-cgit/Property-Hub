@@ -43,7 +43,7 @@ export default function GeneralLedgerPage() {
     <div className="space-y-8 max-w-7xl mx-auto">
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div>
-          <h2 className="text-3xl font-bold tracking-tight font-heading uppercase">General Ledger</h2>
+          <h2 className="text-3xl font-bold tracking-tight font-heading uppercase">Accounting</h2>
           <p className="text-[10px] uppercase tracking-widest text-muted-foreground mt-1">
             Double-entry accounting & GAAP compliant financials
           </p>

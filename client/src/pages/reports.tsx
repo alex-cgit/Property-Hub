@@ -44,7 +44,7 @@ export default function ReportsPage() {
 
       <Tabs defaultValue="gl" className="w-full" onValueChange={setActiveReport}>
         <TabsList className="bg-transparent gap-6 h-auto p-0 border-b border-border/50 w-full justify-start rounded-none">
-          <TabsTrigger value="gl" className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:shadow-none px-0 pb-3 text-[10px] uppercase tracking-widest font-bold">General Ledger</TabsTrigger>
+          <TabsTrigger value="gl" className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:shadow-none px-0 pb-3 text-[10px] uppercase tracking-widest font-bold">Accounting</TabsTrigger>
           <TabsTrigger value="tb" className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:shadow-none px-0 pb-3 text-[10px] uppercase tracking-widest font-bold">Trial Balance</TabsTrigger>
           <TabsTrigger value="activity" className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:shadow-none px-0 pb-3 text-[10px] uppercase tracking-widest font-bold">Account Activity</TabsTrigger>
           <TabsTrigger value="audit" className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:shadow-none px-0 pb-3 text-[10px] uppercase tracking-widest font-bold">Audit Trail</TabsTrigger>
@@ -83,7 +83,7 @@ export default function ReportsPage() {
         <TabsContent value="gl" className="mt-6 space-y-6">
           <div className="bg-card border border-border/50 p-8 min-h-[500px] shadow-sm">
             <div className="text-center mb-8">
-              <h3 className="text-xl font-bold uppercase tracking-tight font-heading">General Ledger Report</h3>
+              <h3 className="text-xl font-bold uppercase tracking-tight font-heading">Accounting Report</h3>
               <p className="text-[10px] uppercase tracking-widest text-muted-foreground mt-1">As of {new Date().toLocaleDateString()}</p>
             </div>
             

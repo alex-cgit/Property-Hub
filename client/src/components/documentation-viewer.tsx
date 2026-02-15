@@ -3,9 +3,17 @@ import { siteDocumentation, PageDoc, SectionDoc } from "@/lib/site-docs";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Download, ChevronRight, ChevronDown, FileText, MousePointer, Type, Layout } from "lucide-react";
+import { Download, ChevronRight, ChevronDown } from "lucide-react";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 
 export function DocumentationViewer() {
   const [openPages, setOpenPages] = useState<Record<string, boolean>>({});
@@ -99,56 +107,57 @@ export function DocumentationViewer() {
                 {page.description}
               </p>
 
-              {page.sections.map((section, idx) => (
-                <Card key={idx} className="rounded-none border-border/50 shadow-none bg-muted/10 mb-4">
-                  <CardHeader className="py-3 px-4 bg-muted/20 border-b border-border/50">
-                    <CardTitle className="text-[10px] font-bold uppercase tracking-widest flex items-center gap-2">
-                      <Layout className="h-3 w-3" />
+              {page.sections.map((section, idx) => {
+                const hasContent = (section.fields && section.fields.length > 0) || (section.actions && section.actions.length > 0);
+                return (
+                  <div key={idx} className="mb-4">
+                    <h4 className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground mb-2">
                       {section.title}
-                    </CardTitle>
-                    {section.description && <CardDescription className="text-[10px]">{section.description}</CardDescription>}
-                  </CardHeader>
-                  <CardContent className="p-4 grid md:grid-cols-2 gap-6">
-                    {section.fields && section.fields.length > 0 && (
-                      <div className="space-y-3">
-                        <h5 className="text-[10px] font-bold uppercase tracking-widest text-primary flex items-center gap-2">
-                          <Type className="h-3 w-3" /> Fields & Data
-                        </h5>
-                        <ul className="space-y-2">
-                          {section.fields.map((field, fIdx) => (
-                            <li key={fIdx} className="text-xs grid grid-cols-[1fr,auto] gap-2 items-start border-b border-border/30 pb-2 last:border-0">
-                              <div>
-                                <span className="font-semibold block">{field.name}</span>
-                                <span className="text-muted-foreground text-[10px]">{field.description}</span>
-                              </div>
-                              <Badge variant="secondary" className="rounded-none text-[8px] h-4">{field.type}</Badge>
-                            </li>
-                          ))}
-                        </ul>
+                      {section.description && (
+                        <span className="font-normal normal-case ml-1">— {section.description}</span>
+                      )}
+                    </h4>
+                    {hasContent ? (
+                      <div className="rounded-none border border-border/50 overflow-hidden">
+                        <Table>
+                          <TableHeader>
+                            <TableRow className="bg-muted/30 hover:bg-muted/30 border-border/50">
+                              <TableHead className="text-[10px] font-bold uppercase tracking-widest w-[120px]">Category</TableHead>
+                              <TableHead className="text-[10px] font-bold uppercase tracking-widest">Name</TableHead>
+                              <TableHead className="text-[10px] font-bold uppercase tracking-widest w-[100px]">Type</TableHead>
+                              <TableHead className="text-[10px] font-bold uppercase tracking-widest">Description</TableHead>
+                            </TableRow>
+                          </TableHeader>
+                          <TableBody>
+                            {section.fields?.map((field, fIdx) => (
+                              <TableRow key={`f-${fIdx}`} className="border-border/50">
+                                <TableCell className="text-[10px] text-muted-foreground py-2">Field</TableCell>
+                                <TableCell className="font-medium text-xs py-2">{field.name}</TableCell>
+                                <TableCell className="py-2">
+                                  <Badge variant="secondary" className="rounded-none text-[8px] h-4">{field.type}</Badge>
+                                </TableCell>
+                                <TableCell className="text-xs text-muted-foreground py-2">{field.description}</TableCell>
+                              </TableRow>
+                            ))}
+                            {section.actions?.map((action, aIdx) => (
+                              <TableRow key={`a-${aIdx}`} className="border-border/50">
+                                <TableCell className="text-[10px] text-emerald-600/90 py-2">Action</TableCell>
+                                <TableCell className="font-medium text-xs py-2">{action.name}</TableCell>
+                                <TableCell className="py-2">
+                                  <Badge variant="outline" className="rounded-none text-[8px] h-4 bg-background">{action.type}</Badge>
+                                </TableCell>
+                                <TableCell className="text-xs text-muted-foreground py-2">{action.description}</TableCell>
+                              </TableRow>
+                            ))}
+                          </TableBody>
+                        </Table>
                       </div>
+                    ) : (
+                      <p className="text-xs text-muted-foreground italic py-1">No fields or actions</p>
                     )}
-
-                    {section.actions && section.actions.length > 0 && (
-                      <div className="space-y-3">
-                        <h5 className="text-[10px] font-bold uppercase tracking-widest text-emerald-600 flex items-center gap-2">
-                          <MousePointer className="h-3 w-3" /> Actions & Interactive
-                        </h5>
-                        <ul className="space-y-2">
-                          {section.actions.map((action, aIdx) => (
-                            <li key={aIdx} className="text-xs grid grid-cols-[1fr,auto] gap-2 items-start border-b border-border/30 pb-2 last:border-0">
-                              <div>
-                                <span className="font-semibold block">{action.name}</span>
-                                <span className="text-muted-foreground text-[10px]">{action.description}</span>
-                              </div>
-                              <Badge variant="outline" className="rounded-none text-[8px] h-4 bg-background">{action.type}</Badge>
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                    )}
-                  </CardContent>
-                </Card>
-              ))}
+                  </div>
+                );
+              })}
 
               {page.subpages && (
                 <div className="mt-4 pt-4 border-t border-border/30">

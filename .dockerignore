@@ -1,0 +1,13 @@
+node_modules
+dist
+.git
+.gitignore
+.env
+.env.*
+*.md
+.DS_Store
+*.log
+npm-debug.log*
+.cursor
+.replit
+attached_assets

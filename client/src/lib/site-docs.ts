@@ -257,7 +257,7 @@ export const siteDocumentation: PageDoc[] = [
   },
   {
     id: "ledger",
-    title: "General Ledger",
+    title: "Accounting",
     route: "/ledger",
     description: "Double-entry accounting system.",
     sections: [

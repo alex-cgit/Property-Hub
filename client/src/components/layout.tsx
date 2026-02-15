@@ -49,6 +49,8 @@ import { Separator } from "@/components/ui/separator";
 import { usePortfolio } from "@/lib/portfolio-context";
 import { portfolios } from "@/lib/mock-data";
 
+const LEDGER_NAV_TITLE = "Accounting";
+
 export default function Layout({ children }: { children: React.ReactNode }) {
   const location = useLocation().pathname;
   const { selectedPortfolioId } = usePortfolio();
@@ -61,7 +63,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
     { title: "Parties", icon: Users, url: "/parties" },
     { title: "Maintenance", icon: Wrench, url: "/maintenance" },
     { title: "Financials", icon: DollarSign, url: "/financials" },
-    { title: "General Ledger", icon: FileText, url: "/ledger" },
+    { title: LEDGER_NAV_TITLE, icon: FileText, url: "/ledger" },
     { title: "Reports", icon: ClipboardList, url: "/reports" },
     { title: "Configuration", icon: Settings, url: "/settings" },
   ];
@@ -168,12 +170,14 @@ function AppSidebar({ location, navItems }: { location: string, navItems: any[] 
                   <SidebarMenuButton 
                     asChild 
                     isActive={location === item.url || (item.url !== "/" && location.startsWith(item.url))}
-                    tooltip={item.title}
+                    tooltip={item.url === "/ledger" ? "Accounting" : item.title}
                     className="gap-4 px-3 py-3 h-auto rounded-none text-sidebar-foreground/60 hover:bg-sidebar-accent hover:text-sidebar-accent-foreground data-[active=true]:bg-transparent data-[active=true]:text-sidebar-primary data-[active=true]:font-bold border-l-2 border-transparent data-[active=true]:border-primary transition-all duration-200 overflow-hidden"
                   >
                     <Link to={item.url}>
                       <item.icon className="h-4 w-4 shrink-0 stroke-[1.5]" />
-                      <span className="text-xs uppercase tracking-wider group-data-[collapsible=icon]:hidden whitespace-nowrap">{item.title}</span>
+                      <span className="text-xs uppercase tracking-wider group-data-[collapsible=icon]:hidden whitespace-nowrap">
+                        {item.url === "/ledger" ? "Accounting" : item.title}
+                      </span>
                     </Link>
                   </SidebarMenuButton>
                 </SidebarMenuItem>

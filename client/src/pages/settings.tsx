@@ -257,7 +257,7 @@ export default function SettingsPage() {
         <TabsContent value="financials" className="space-y-6 animate-in fade-in slide-in-from-bottom-2 duration-500">
            <Card className="rounded-none border-border/50 shadow-sm">
               <CardHeader className="bg-muted/30 border-b border-border/50 py-4">
-                <CardTitle className="text-xs font-bold uppercase tracking-widest">General Ledger Configuration</CardTitle>
+                <CardTitle className="text-xs font-bold uppercase tracking-widest">Accounting Configuration</CardTitle>
                 <CardDescription className="text-[10px] uppercase tracking-widest">Chart of Accounts & Fiscal Year</CardDescription>
               </CardHeader>
               <CardContent className="p-6 space-y-6">
