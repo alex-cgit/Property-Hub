@@ -1,11 +1,12 @@
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate, Outlet } from "react-router-dom";
 import { queryClient } from "./lib/queryClient";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { PortfolioProvider } from "@/lib/portfolio-context";
 import NotFound from "@/pages/not-found";
-import Layout from "@/components/layout";
+import DashboardLayout from "@/components/layout/dashboard-layout";
+import PortalLayout from "@/components/layout/portal-layout";
 import Dashboard from "@/pages/dashboard";
 import LandingPage from "@/pages/landing";
 import PropertiesPage from "@/pages/properties";
@@ -20,7 +21,6 @@ import GeneralLedgerPage from "@/pages/ledger";
 import PartiesPage from "@/pages/parties";
 import JournalEntryFormPage from "@/pages/journal-entry-form";
 import ReportsPage from "@/pages/reports";
-
 import SettingsPage from "@/pages/settings";
 
 function App() {
@@ -31,10 +31,11 @@ function App() {
           <Toaster />
           <BrowserRouter>
             <Routes>
+              {/* Public Routes */}
               <Route path="/" element={<LandingPage />} />
               
-              {/* Dashboard & App Routes wrapped in Layout */}
-              <Route element={<Layout><OutletLayout /></Layout>}>
+              {/* Manager Routes (Dashboard Layout) */}
+              <Route element={<DashboardLayout><Outlet /></DashboardLayout>}>
                 <Route path="/dashboard" element={<Dashboard />} />
                 <Route path="/properties" element={<PropertiesPage />} />
                 <Route path="/properties/:id" element={<PropertyDetailPage />} />
@@ -50,6 +51,13 @@ function App() {
                 <Route path="/reports" element={<ReportsPage />} />
                 <Route path="/settings" element={<SettingsPage />} />
               </Route>
+
+              {/* Tenant Portal Routes (Portal Layout) */}
+              <Route path="/portal" element={<PortalLayout><Outlet /></PortalLayout>}>
+                <Route index element={<div className="p-4">Tenant Dashboard (Coming Soon)</div>} />
+                <Route path="payments" element={<div className="p-4">Payment History (Coming Soon)</div>} />
+                <Route path="maintenance" element={<div className="p-4">My Requests (Coming Soon)</div>} />
+              </Route>
               
               <Route path="*" element={<NotFound />} />
             </Routes>
@@ -59,9 +67,5 @@ function App() {
     </QueryClientProvider>
   );
 }
-
-// Helper component to render outlet
-import { Outlet } from "react-router-dom";
-const OutletLayout = () => <Outlet />;
 
 export default App;
