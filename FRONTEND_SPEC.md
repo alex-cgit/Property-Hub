@@ -7,132 +7,67 @@ description: "Property Hub Frontend Architecture and Design Plan"
 
 This document outlines the frontend architecture, feature breakdown, screen flows, and usability considerations for the Property Hub application, focusing on distinct user personas.
 
-## Core Principles
+## 1. Core Architecture & Tech Stack
 
-- **Persona-Driven Design:** Tailored experiences for Landlord, Property Manager, Tenant, Maintenance, and Vendor.
-- **Usability First:** Intuitive navigation, clear data presentation, streamlined workflows.
-- **Modularity:** Component-based architecture using React, Vite, TypeScript, Tailwind CSS, and shadcn/ui.
-- **Mock Data First:** Development can proceed independently of backend Supabase integration.
+*   **Core Framework:** React
+*   **Build Tool:** Vite
+*   **Language:** TypeScript
+*   **Styling:** Tailwind CSS
+*   **Component Library:** shadcn/ui (based on Radix UI primitives)
+*   **State Management:** React Context, `tanstack/react-query`
+*   **Backend Interface:** Supabase Client
 
------
+## 2. User Personas & Security Model
 
-**EPIC 1: Core Property & Unit Management**
+### A. Property Manager (Admin)
+*   **Access:** Full CRUD.
+*   **Goals:** Efficiency, bulk actions, financial oversight.
+*   **Security:** Role `admin` or `manager`.
 
-*   **Description:** Foundation for managing properties and their constituent units, central to all operations.
+### B. Landlord / Owner (Viewer)
+*   **Access:** Read-only.
+*   **Goals:** Transparency, financial health check.
+*   **Security:** Role `owner`.
 
-    *   **Persona:** Landlord/Owner, Property Manager
-    *   **Features:**
-        *   **Property Portfolio Overview:**
-            *   **Function:** Display aggregated stats (Total Units, Occupancy Rate, Total Income, Total Expenses).
-            *   **Function:** Quick view of recent activity (new leases, maintenance requests, payments).
-            *   **Function:** Links to detailed property views.
-        *   **Property List View:**
-            *   **Function:** List all properties managed by the user.
-            *   **Function:** Display key stats per property (Address, Units, Occupancy %, Net Income).
-            *   **Function:** Search/filter properties.
-        *   **Property Detail View:**
-            *   **Function:** Display comprehensive property information (address, photos, description, unit count).
-            *   **Function:** Tabs for Units, Leases, Financials, Documents, Tasks.
-        *   **Unit Management:**
-            *   **Function:** View list of units within a property.
-            *   **Function:** Display unit status (Occupied, Vacant, Maintenance).
-            *   **Function:** Add/Edit unit details (unit number, rent, status).
-    *   **Pain Points Addressed:** Lack of clear portfolio overview, difficulty managing multiple properties.
+### C. Tenant (User)
+*   **Access:** Read Lease/Unit, Create Maintenance Requests.
+*   **Goals:** Pay rent, report issues, access documents.
+*   **Security:** Role `tenant`.
 
----  
+## 3. Screen Flows & Usability
 
-**EPIC 2: Leasing & Tenant Management**
+### Flow 1: Manager Dashboard
+*   **Route:** `/` or `/dashboard`
+*   **Components:** `StatCard`, `ActivityFeed`, `DashboardCharts`.
+*   **User Story:** Manager sees tasks, KPIs, clicks property for details.
 
-*   **Description:** Streamlining the process of acquiring and managing tenants and their agreements.
+### Flow 2: Property Master View
+*   **Route:** `/properties` -> `/properties/:id`
+*   **Components:** `PropertyInfoSidebar`, `PropertyLeasesTab`, `PropertyFinancialTab`.
+*   **User Story:** Manager views property list, clicks card, navigates tabs (Overview, Units, Leases, Financials, Docs, Tasks).
 
-    *   **Persona:** Property Manager, Landlord (view only)
-    *   **Features:**
-        *   **Lease Creation Wizard:**
-            *   **Function:** Step-by-step process for creating new leases.
-            *   **Steps:** Select property/unit, tenant selection, define dates (start, end, renewal), set financial terms (rent, deposit, late fees), upload documents, review and generate.
-        *   **Lease Overview & Details:**
-            *   **Function:** List all leases associated with a property or tenant.
-            *   **Function:** Display lease status (Active, Expired, Pending).
-            *   **Function:** View full lease details (terms, dates, rent, tenant info, uploaded docs).
-        *   **Tenant Profile Management:**
-            *   **Function:** Database of tenants with contact info, lease history, payment history.
-            *   **Function:** Add/Edit tenant details.
-            *   **Function:** View communication logs with tenant.
-        *   **Lease Renewal Workflow:**
-            *   **Function:** Initiate and track lease renewal process.
-            *   **Function:** Automated reminders for upcoming lease expirations.
-    *   **Pain Points Addressed:** Cumbersome lease creation, manual tracking of renewals and tenant info.
+### Flow 3: Lease Creation Wizard (Manager Only)
+*   **Route:** `/leases/new`
+*   **Components:** `LeaseFormDialog`, `Stepper`.
+*   **Steps:** Unit/Tenant Selection → Dates → Financial Terms → Documents → Review.
 
----  
+### Flow 4: Tenant Portal Experience
+*   **Route:** `/portal`
+*   **User Story:** Tenant logs in, pays rent, submits maintenance, views lease.
 
-**EPIC 3: Financial Tracking & Reporting**
+## 4. Technical Implementation Details
 
-*   **Description:** Centralized management of all property-related income and expenses.
+*   **Mock Data:** `src/lib/mock-data.ts` will be expanded significantly.
+*   **Hooks:** Utilize `use-mobile.tsx`, `use-toast.ts`.
+*   **Supabase:** Use `src/integrations/supabase/client.ts` for backend connection.
 
-    *   **Persona:** Landlord/Owner, Property Manager
-    *   **Features:**
-        *   **Property-Level Ledger:**
-            *   **Function:** Detailed view of income (rent, fees) and expenses (maintenance, utilities) for a specific property.
-            *   **Function:** Transaction history with dates, categories, amounts.
-        *   **Portfolio Financial Dashboard:**
-            *   **Function:** Aggregated view of income, expenses, and net profit across all properties.
-            *   **Function:** Visualizations (charts) for performance trends.
-        *   **Expense Tracking:**
-            *   **Function:** Log and categorize expenses with receipt uploads.
-            *   **Function:** Assign expenses to specific properties or units.
-        *   **Automated Reporting:**
-            *   **Function:** Generate P&L statements, occupancy reports, rent roll summaries.
-            *   **Function:** Export reports in various formats (PDF, CSV).
-    *   **Pain Points Addressed:** Lack of clear financial visibility, difficulty in generating reports, manual expense tracking.
+## 5. Development Roadmap (Sprint 1)
 
----  
+**Priority:** Property Manager Core Features.
 
-**EPIC 4: Maintenance & Task Management**
+1.  **Mock Data Expansion:** Populate `src/lib/mock-data.ts` fully.
+2.  **Dashboard Dev:** Build `StatCard`s and activity feed.
+3.  **Property List:** Implement `PropertiesListPage.tsx` and `PropertyListItem`.
+4.  **Lease Wizard UI:** Set up the stepper and form fields.
 
-*   **Description:** Streamlining the process of handling maintenance requests and other property tasks.
-
-    *   **Persona:** Property Manager, Maintenance Staff, Tenant
-    *   **Features:**
-        *   **Maintenance Request Submission (Tenant):**
-            *   **Function:** Simple form to submit requests with description, photos, priority, and preferred times.
-        *   **Task Dashboard (Manager/Maintenance):**
-            *   **Function:** View all open, in-progress, and completed tasks.
-            *   **Function:** Filter/sort tasks by property, unit, assignee, status, priority.
-        *   **Task Assignment & Workflow:**
-            *   **Function:** Assign tasks to internal maintenance staff or external vendors.
-            *   **Function:** Track task progress, add notes, log time and materials used.
-            *   **Function:** Update task status (New, Assigned, In Progress, Resolved, Closed).
-        *   **Vendor Management:**
-            *   **Function:** Database of approved vendors with contact info and service history.
-            *   **Function:** Track vendor performance and past job costs.
-        *   **Notifications:**
-            *   **Function:** Notify tenants of request status changes.
-            *   **Function:** Notify managers of new requests or status updates.
-    *   **Pain Points Addressed:** Inefficient request handling, lack of transparency in maintenance status, communication overhead.
-
----  
-
-**EPIC 5: User Management & Access Control**
-
-*   **Description:** Managing users, roles, and permissions across the platform.
-
-    *   **Persona:** Owner, Property Manager (Admin), (Tenant, Maintenance, Vendor - as users)
-    *   **Features:**
-        *   **Role-Based Access Control:**
-            *   **Function:** Define distinct roles (Owner, Manager, Tenant, Maintenance, Vendor) with specific permissions.
-            *   **Function:** Assign roles to users.
-        *   **User Account Management:**
-            *   **Function:** Add, edit, and deactivate user accounts.
-            *   **Function:** Secure authentication (login/logout).
-    *   **Pain Points Addressed:** Ensuring data security, providing appropriate access levels to different user types.
-
----  
-
-**Next Steps for Implementation:**
-
-1.  **Prioritize Features:** Based on your immediate needs, we can prioritize which features to build first (likely core property/unit management and lease/tenant features).
-2.  **Mock Data Expansion:** Expand `src/lib/mock-data.ts` to cover the detailed requirements for each persona and feature.
-3.  **Component Development:** Start building reusable UI components based on `shadcn/ui` and the frontend structure.
-4.  **Task Definition for Agents:** Break down features into tasks for the Architect, Engineer, and QA agents using `agent-team-orchestration`.
-
-Let me know which persona's features or which EPIC we should focus on first!
+---
