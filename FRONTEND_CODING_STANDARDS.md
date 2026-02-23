@@ -1,76 +1,166 @@
-# Property Hub Frontend Coding Standards
+# Property Hub - Frontend Coding Standards
 
-This document outlines the coding standards and best practices for frontend development on the Property Hub application. Adhering to these standards ensures consistency, maintainability, and a high-quality user experience.
+## 1. Project Philosophy
+This document defines the strict coding standards required for the Property Hub frontend. Consistency is key. Every file should look like it was written by the same person.
 
-## 1. Frameworks & Libraries
-
-*   **Core Framework:** React
-*   **Build Tool:** Vite (for fast development server and optimized builds)
-*   **Language:** TypeScript (for type safety and better code quality)
-*   **Styling:** Tailwind CSS (utility-first approach for rapid styling and consistent design)
-*   **Component Library:** shadcn/ui (based on Radix UI primitives). Emphasize using existing shadcn/ui components wherever possible to maintain visual consistency and accessibility.
-*   **State Management:** React Context for global state (e.g., `UserContext`, `PortfolioContext`), `tanstack/react-query` for server state management and caching.
-
-## 2. Project Structure & Organization
-
-Adhere to the established directory structure:
-
-*   **`client/src/`**: Main application source code.
-    *   **`pages/`**: Top-level route components.
-    *   **`components/`**: Reusable UI components.
-        *   **`ui/`**: Primitives from shadcn/ui.
-        *   **`lease/`, `property/`, etc.:** Feature-specific components.
-    *   **`hooks/`**: Custom React Hooks (e.g., `useMobile`, `useToast`).
-    *   **`lib/`**: Utility functions, API clients, mock data.
-    *   **`integrations/`**: Integrations with external services (e.g., Supabase).
-*   **`public/`**: Static assets (images, favicons, docs).
-*   **`scripts/`**: Build or utility scripts.
-
-## 3. Component Best Practices
-
-*   **Atomicity:** Components should be small, reusable, and focused on a single responsibility.
-*   **Props:** Clearly define prop types using TypeScript interfaces.
-*   **State:** Keep component state local where possible. Lift state up to context or query client when shared across components.
-*   **Accessibility (A11y):** Use semantic HTML, ARIA attributes where necessary, and ensure keyboard navigability. Leverage shadcn/ui components which are built with accessibility in mind.
-
-## 4. Styling with Tailwind CSS
-
-*   **Utility-First:** Use Tailwind utility classes directly in JSX for styling. Avoid custom CSS files unless absolutely necessary for complex, non-reusable styles.
-*   **Configuration:** Adhere to `tailwind.config.ts` for theme consistency.
-*   **Responsiveness:** Utilize Tailwind's responsive prefixes (e.g., `md:`, `lg:`) for adaptable layouts.
-
-## 5. State Management & Data Fetching
-
-*   **Global State:** Use React Context (`UserContext`, `PortfolioContext`) for shared application-level state.
-*   **Server State:** Leverage `tanstack/react-query` for fetching, caching, and synchronizing data from Supabase.
-    *   Define query keys clearly.
-    *   Use mutations for data modifications.
-*   **Mock Data:** Utilize `src/lib/mock-data.ts` for frontend development and testing before full Supabase integration.
-
-## 6. TypeScript Usage
-
-*   **Strict Typing:** Enforce strict type checking (`tsconfig.json`).
-*   **Interfaces:** Define interfaces for props, state, API responses, and data models.
-*   **Avoid `any`:** Use specific types whenever possible.
-
-## 7. Linting & Formatting
-
-*   **ESLint & Prettier:** Ensure code quality and consistency by running linters and formatters.
-*   **Integration:** Integrate ESLint and Prettier into your IDE and the build process.
-
-## 8. Testing
-
-*   **Unit & Integration Tests:** Write tests using Vitest (configured in `vitest.config.ts`) for components and critical logic.
-*   **Test Coverage:** Aim for reasonable test coverage, especially for business logic and complex UI interactions.
-
-## 9. Error Handling & User Feedback
-
-*   **Toasts:** Use the `useToast` hook and `Toaster` component for user feedback (e.g., success messages, errors).
-*   **Alert Dialogs:** Use `AlertDialog` for critical user confirmations.
-*   **Error Boundaries:** Implement React Error Boundaries for graceful UI error handling.
-
-## 10. Commit Messages
-
-*   Follow conventional commit messages (e.g., `feat:`, `fix:`, `docs:`, `refactor:`) for clear and consistent commit history.
+### Core Principles
+*   **Predictability:** File structures and naming conventions must be uniform.
+*   **Maintainability:** Small, single-responsibility components. No "God Components" (>300 lines).
+*   **Performance:** Optimize render cycles. Use memoization where appropriate but avoid premature optimization.
+*   **Type Safety:** `any` is strictly forbidden. All data structures must be typed.
 
 ---
+
+## 2. Directory Structure & Naming
+We follow a **Feature-First** architecture inside `src/`.
+
+```
+src/
+├── app/                    # Global app setup (providers, layout, router)
+├── assets/                 # Static assets (images, global css)
+├── components/             # Shared UI components (shadcn/ui, buttons, inputs)
+│   ├── ui/                 # Shadcn primitives (do not modify logic here)
+│   └── layout/             # Header, Sidebar, Footer
+├── features/               # Feature-based modules (The core logic)
+│   ├── auth/               # Authentication (Login, Register, Forgot Password)
+│   ├── dashboard/          # Dashboard specific widgets
+│   ├── properties/         # Property management (List, Details, Edit)
+│   │   ├── components/     # Components specific to this feature
+│   │   ├── hooks/          # Hooks specific to this feature
+│   │   ├── types/          # Types specific to this feature
+│   │   └── api/            # API calls specific to this feature
+│   ├── leases/             # Lease management
+│   └── maintenance/        # Maintenance requests
+├── hooks/                  # Global hooks (useTheme, useToast)
+├── lib/                    # Utilities (cn, formatters, validators)
+├── services/               # Global API services (axios/fetch instances)
+├── store/                  # Global state stores (Zustand)
+└── types/                  # Global types (User, Role, ApiError)
+```
+
+### Naming Conventions
+*   **Folders:** `kebab-case` (e.g., `user-profile`, `lease-agreement`)
+*   **Files (Components):** `PascalCase.tsx` (e.g., `UserProfileCard.tsx`)
+*   **Files (Hooks):** `camelCase.ts` (e.g., `useLeaseCalculator.ts`)
+*   **Files (Utils/Types):** `kebab-case.ts` (e.g., `date-formatters.ts`, `api-types.ts`)
+*   **Interfaces/Types:** `PascalCase` (e.g., `interface LeaseDocument`)
+*   **Constants:** `UPPER_SNAKE_CASE` (e.g., `MAX_UPLOAD_SIZE_MB`)
+
+---
+
+## 3. TypeScript Guidelines
+*   **Strict Mode:** Always enabled in `tsconfig.json`.
+*   **Explicit Returns:** Functions should have explicit return types if complex.
+*   **Interfaces vs Types:** Use `interface` for defining object shapes (better error messages). Use `type` for unions/intersections.
+*   **No `any`:** Use `unknown` if the type is truly dynamic, then type guard it.
+*   **Props:** Define props interface immediately above the component.
+    ```typescript
+    interface ButtonProps {
+        variant: 'primary' | 'secondary';
+        label: string;
+        onClick: () => void;
+    }
+    ```
+
+---
+
+## 4. Component Structure
+Components should follow a consistent ordering:
+
+1.  **Imports:** External libs first, then internal alias imports (`@/components/...`), then relative imports.
+2.  **Interface Definitions:** Props interface.
+3.  **Component Definition:** `export const MyComponent = ({ prop }: Props) => { ... }`
+4.  **Hooks:** State, Context, Custom Hooks.
+5.  **Derived State:** `const isActive = status === 'active';`
+6.  **Effects:** `useEffect` (Keep minimal).
+7.  **Handlers:** `handleSubmit`, `onClick`.
+8.  **Render:** Return JSX.
+
+### Example
+```typescript
+import { useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
+import { Button } from '@/components/ui/button';
+import { formatDate } from '@/lib/formatters';
+
+interface PropertyCardProps {
+    id: string;
+    address: string;
+}
+
+export const PropertyCard = ({ id, address }: PropertyCardProps) => {
+    // 1. Hooks
+    const [isExpanded, setIsExpanded] = useState(false);
+    const { data: details, isLoading } = useQuery(['property', id], fetchPropertyDetails);
+
+    // 2. Handlers
+    const toggleExpand = () => setIsExpanded(!isExpanded);
+
+    // 3. Render
+    if (isLoading) return <Skeleton className="h-40 w-full" />;
+
+    return (
+        <div className="border rounded-lg p-4">
+            <h3 className="text-lg font-bold">{address}</h3>
+            <p>Built: {formatDate(details.buildDate)}</p>
+            <Button onClick={toggleExpand}>
+                {isExpanded ? 'Hide' : 'Show Details'}
+            </Button>
+        </div>
+    );
+};
+```
+
+---
+
+## 5. State Management
+*   **Local State (`useState`):** UI toggles, form inputs (if not using react-hook-form), simple component interactions.
+*   **Server State (`React Query`):** ALL async data fetching. Do not use `useEffect` + `fetch` manually.
+    *   Use strict query keys: `['properties', 'list', filters]`.
+    *   Use `useMutation` for updates (`POST`, `PUT`, `DELETE`).
+*   **Global Client State (`Zustand`):** User session, sidebar open/close, theme preferences.
+    *   Avoid Context API for complex state updates to prevent re-render hell.
+*   **Form State (`React Hook Form`):** Use `zod` for schema validation.
+
+---
+
+## 6. Styling (Tailwind CSS)
+*   **Utility-First:** Use Tailwind classes for 99% of styling.
+*   **`cn()` Utility:** Use `clsx` + `tailwind-merge` for conditional classes.
+    ```typescript
+    // GOOD
+    className={cn(
+        "bg-blue-500 text-white p-4 rounded",
+        isActive && "bg-blue-700",
+        className // Allow overrides
+    )}
+    ```
+*   **Avoid `@apply`:** Do not create custom CSS classes with `@apply` unless strictly necessary for complex animations or legacy integration.
+*   **Spacing:** Use standardized margin/padding (`m-4`, `p-6`). Do not use arbitrary values (`m-[13px]`) unless pixel-perfect design demands it.
+
+---
+
+## 7. Error Handling & Validation
+*   **API Errors:** Handle errors at the service layer or in `onError` callbacks of React Query.
+*   **Boundaries:** Wrap feature modules in `ErrorBoundary` components to prevent app-wide crashes.
+*   **Input Validation:** All user inputs MUST be validated with Zod schemas.
+    ```typescript
+    const loginSchema = z.object({
+        email: z.string().email(),
+        password: z.string().min(8)
+    });
+    ```
+
+---
+
+## 8. Testing Standards
+*   **Unit Tests:** Vitest + React Testing Library.
+    *   Test logic, not implementation details.
+    *   Test: "User clicks button -> Handler called."
+    *   Don't Test: "State variable `isOpen` is true."
+*   **E2E:** Playwright (Critical paths only: Login, Create Lease, Pay Rent).
+
+## 9. Git Workflow
+*   **Branches:** `feature/my-feature`, `fix/issue-number`, `chore/cleanup`.
+*   **Commits:** Conventional Commits (`feat: add login form`, `fix: resolve crash on dashboard`).
+*   **PRs:** Must have a description, screenshots (if UI changed), and pass CI checks.
